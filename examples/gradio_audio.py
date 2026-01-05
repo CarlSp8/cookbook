@@ -239,8 +239,19 @@ def registry(
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
+                    <div style='text-align: center; margin-bottom: 1rem'>
+                        <h1 style='font-size: 2rem; margin-bottom: 0.5rem'>Gemini API Voice Chat</h1>
+                        <p style='margin-bottom: 0.5rem'>Speak with Gemini using real-time audio streaming.</p>
+                        <p style='margin-bottom: 1rem'>Get an API Key <a href="https://aistudio.google.com/apikey" target="_blank">here</a>.</p>
+                        <div style='padding: 1rem; background-color: #f0f4f8; border-radius: 8px; text-align: left; display: inline-block; max-width: 600px'>
+                            <p><strong>Instructions:</strong></p>
+                            <ol style='margin-left: 1.5rem; margin-top: 0.5rem'>
+                                <li>Click "Record" to start the conversation.</li>
+                                <li>Speak clearly into your microphone.</li>
+                                <li>Gemini will reply with audio.</li>
+                            </ol>
+                            <p style='margin-top: 0.5rem; color: #666; font-size: 0.9em'><em>Note: Interruptions are currently not supported.</em></p>
+                        </div>
                     </div>
                     """
                 )
