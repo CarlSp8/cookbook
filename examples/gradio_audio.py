@@ -239,8 +239,19 @@ def registry(
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
+                    <div style='text-align: left; margin-bottom: 20px;'>
+                        <h1 style='font-size: 2em; margin-bottom: 10px;'>Gemini API Voice Chat</h1>
+                        <p style='font-size: 1.1em; color: #4B5563; margin-bottom: 20px;'>
+                            Experience real-time voice interaction with Gemini 2.5 Flash Lite.
+                        </p>
+                        <div role="region" aria-label="Instructions" style='background-color: #F3F4F6; padding: 16px; border-radius: 8px; border-left: 4px solid #3B82F6;'>
+                            <h2 style='font-size: 1.1em; font-weight: 600; margin-top: 0; margin-bottom: 10px;'>How to use:</h2>
+                            <ul style='margin: 0; padding-left: 20px; color: #374151; line-height: 1.5;'>
+                                <li>Ensure your microphone is enabled.</li>
+                                <li>Click the <strong>Record</strong> button below to start the conversation.</li>
+                                <li>Speak clearly into your microphone and listen to the response.</li>
+                            </ul>
+                        </div>
                     </div>
                     """
                 )
