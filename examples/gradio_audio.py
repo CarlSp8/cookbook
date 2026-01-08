@@ -239,8 +239,10 @@ def registry(
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
+                    <div style='text-align: center'>
+                        <h1>Gemini API Voice Chat 🎙️</h1>
+                        <p style="margin-bottom: 10px; font-size: 1.1em;">Speak with Gemini using real-time audio streaming.</p>
+                        <p style="font-size: 0.9em; color: gray;">Ensure GOOGLE_API_KEY is set in your environment.</p>
                     </div>
                     """
                 )
