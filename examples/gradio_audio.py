@@ -231,7 +231,17 @@ def registry(
     """Sets up and returns the Gradio interface."""
     api_key = token or os.environ.get(KEY_NAME)
     if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
+        # Gracefully handle missing API key
+        with gr.Blocks() as interface:
+            gr.Markdown(
+                f"""
+                ## ⚠️ Missing API Key
+                Please set the `{KEY_NAME}` environment variable to use this demo.
+
+                You can get an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+                """
+            )
+        return interface
 
     interface = gr.Blocks()
     with interface:
@@ -239,9 +249,18 @@ def registry(
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
+                    <div style='text-align: center'>
                         <h1>Gemini API Voice Chat</h1>
+                        <p>Powered by Gemini 2.5 Flash Lite</p>
                     </div>
+                    """
+                )
+                gr.Markdown(
+                    """
+                    ### How to use
+                    1. **Enter API Key**: Ensure `GOOGLE_API_KEY` is set in your environment.
+                    2. **Start Recording**: Click the microphone icon to start.
+                    3. **Speak**: Talk to Gemini naturally.
                     """
                 )
                 gemini_handler = GeminiHandler()
@@ -257,8 +276,9 @@ def registry(
                 )
     return interface
 
-# Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    # Launch the Gradio interface
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
