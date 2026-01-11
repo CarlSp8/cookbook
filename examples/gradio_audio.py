@@ -231,7 +231,18 @@ def registry(
     """Sets up and returns the Gradio interface."""
     api_key = token or os.environ.get(KEY_NAME)
     if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
+        # Gracefully handle missing API key
+        with gr.Blocks() as error_interface:
+            gr.Markdown(
+                f"""
+                ## ⚠️ API Key Missing
+
+                The `{KEY_NAME}` environment variable is not set.
+
+                Please set it to your Google API key to use this demo.
+                """
+            )
+        return error_interface
 
     interface = gr.Blocks()
     with interface:
@@ -241,6 +252,11 @@ def registry(
                     """
                     <div style='text-align: left'>
                         <h1>Gemini API Voice Chat</h1>
+                        <p>
+                          Click the <span style="font-weight: bold">Record</span> button to start a conversation with Gemini.
+                          <br/>
+                          <span style="font-size: 0.9em; color: #666;">Note: Interruptions are not currently supported. Please wait for the response to finish before speaking again.</span>
+                        </p>
                     </div>
                     """
                 )
@@ -258,7 +274,8 @@ def registry(
     return interface
 
 # Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
