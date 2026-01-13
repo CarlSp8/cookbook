@@ -230,8 +230,6 @@ def registry(
 ):
     """Sets up and returns the Gradio interface."""
     api_key = token or os.environ.get(KEY_NAME)
-    if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
     interface = gr.Blocks()
     with interface:
@@ -241,12 +239,23 @@ def registry(
                     """
                     <div style='text-align: left'>
                         <h1>Gemini API Voice Chat</h1>
+                        <p>Get an API Key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a>.</p>
                     </div>
                     """
                 )
+
+                if not api_key:
+                    gr.Warning(f"{KEY_NAME} environment variable is not set. Please set it to use the demo.")
+                    return interface
+
                 gemini_handler = GeminiHandler()
                 with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+                    audio = WebRTC(
+                        label="Voice Chat",
+                        modality="audio",
+                        mode="send-receive",
+                        info="Select your microphone and click Record to chat with Gemini. Interruptions are not supported."
+                    )
 
                 audio.stream(
                     gemini_handler,
@@ -258,7 +267,8 @@ def registry(
     return interface
 
 # Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
