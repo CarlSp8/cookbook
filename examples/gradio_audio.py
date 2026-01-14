@@ -233,28 +233,30 @@ def registry(
     if not api_key:
         raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
+    interface = gr.Blocks(title="Gemini Voice Chat", theme=gr.themes.Soft())
     with interface:
-        with gr.Tabs():
-            with gr.TabItem("Voice Chat"):
-                gr.HTML(
-                    """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
-                    </div>
-                    """
-                )
-                gemini_handler = GeminiHandler()
-                with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+        gr.HTML(
+            """
+            <div style='text-align: center'>
+                <h1>Gemini API Voice Chat</h1>
+                <p>Speak with Gemini using real-time audio streaming.</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                    <b>Note:</b> Interruptions are not supported in this demo.
+                </p>
+            </div>
+            """
+        )
+        gemini_handler = GeminiHandler()
+        with gr.Row():
+            audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
 
-                audio.stream(
-                    gemini_handler,
-                    inputs=[audio],
-                    outputs=[audio],
-                    time_limit=600,
-                    concurrency_limit=10
-                )
+        audio.stream(
+            gemini_handler,
+            inputs=[audio],
+            outputs=[audio],
+            time_limit=600,
+            concurrency_limit=10
+        )
     return interface
 
 # Launch the Gradio interface
