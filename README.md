@@ -88,6 +88,13 @@ These fully functional, end-to-end applications showcase the power of Gemini in 
 <br><br>
 
 
+## 4. Tutorials
+
+This section contains tutorials for using various AI APIs.
+
+*   [**Free, Unlimited Claude API**](./tutorials/Free_Unlimited_Claude_API.md): How to use Puter.js to access Claude models for free.
+<br><br>
+
 ## Official SDKs
 
 The Gemini API is a REST API. You can call it directly using tools like `curl` (see [REST examples](https://github.com/google-gemini/cookbook/tree/main/quickstarts/rest/) or the great [Postman workspace](https://www.postman.com/ai-on-postman/google-gemini-apis/overview)), or use one of our official SDKs:
