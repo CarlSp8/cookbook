@@ -230,35 +230,59 @@ def registry(
 ):
     """Sets up and returns the Gradio interface."""
     api_key = token or os.environ.get(KEY_NAME)
-    if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
+    has_key = api_key is not None
 
-    interface = gr.Blocks()
-    with interface:
+    with gr.Blocks(theme=gr.themes.Soft()) as interface:
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
+                    <div style='text-align: center'>
                         <h1>Gemini API Voice Chat</h1>
+                        <p>Speak with Gemini using real-time audio streaming.</p>
                     </div>
                     """
                 )
-                gemini_handler = GeminiHandler()
-                with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
 
-                audio.stream(
-                    gemini_handler,
-                    inputs=[audio],
-                    outputs=[audio],
-                    time_limit=600,
-                    concurrency_limit=10
-                )
+                if has_key:
+                    gr.Markdown("""
+                    ### Instructions
+                    1. Click "Record" to start talking.
+                    2. Gemini will reply.
+                    3. Note: Interruptions are not supported in this demo.
+                    """)
+
+                    gemini_handler = GeminiHandler()
+                    with gr.Row():
+                        audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+
+                    audio.stream(
+                        gemini_handler,
+                        inputs=[audio],
+                        outputs=[audio],
+                        time_limit=600,
+                        concurrency_limit=10
+                    )
+                else:
+                     gr.Markdown(
+                        f"""
+                        ## ⚠️ Missing API Key
+
+                        To run this demo, you need to set the `{KEY_NAME}` environment variable.
+
+                        1. Get an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+                        2. Set the environment variable:
+                           ```bash
+                           export {KEY_NAME}='your_key_here'
+                           ```
+                        3. Restart this script.
+                        """
+                    )
     return interface
 
 # Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
