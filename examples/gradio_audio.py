@@ -230,23 +230,59 @@ def registry(
 ):
     """Sets up and returns the Gradio interface."""
     api_key = token or os.environ.get(KEY_NAME)
-    if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
+    # Graceful error handling for missing API key
+    if not api_key:
+        with gr.Blocks(theme=gr.themes.Soft()) as error_interface:
+            gr.Markdown(
+                """
+                # ⚠️ Missing API Key
+
+                To use the Gemini API Voice Chat, you must set the `GOOGLE_API_KEY` environment variable.
+
+                You can get an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+                **How to fix:**
+                1. Get your key.
+                2. Run `export GOOGLE_API_KEY='your_key_here'` in your terminal.
+                3. Restart this script.
+                """
+            )
+        return error_interface
+
+    interface = gr.Blocks(theme=gr.themes.Soft(), title="Gemini Voice Chat")
     with interface:
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
+                    <div style='text-align: center; margin-bottom: 20px;'>
                         <h1>Gemini API Voice Chat</h1>
+                        <p>Speak naturally with Gemini using real-time audio streaming.</p>
                     </div>
                     """
                 )
+
+                with gr.Row():
+                    gr.Markdown(
+                        """
+                        ### Instructions
+                        1. Click **Record** to start the conversation.
+                        2. Speak into your microphone.
+                        3. Gemini will reply with audio.
+
+                        *Note: Interruptions are not currently supported.*
+                        """
+                    )
+
                 gemini_handler = GeminiHandler()
                 with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+                    audio = WebRTC(
+                        label="Voice Chat",
+                        modality="audio",
+                        mode="send-receive",
+                        icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png"
+                    )
 
                 audio.stream(
                     gemini_handler,
@@ -258,7 +294,8 @@ def registry(
     return interface
 
 # Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
