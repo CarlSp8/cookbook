@@ -139,7 +139,7 @@ class GeminiHandler(AsyncStreamHandler):
         self.quit.set()
 
 
-with gr.Blocks() as demo:
+with gr.Blocks(theme=gr.themes.Soft(), title="Gemini Voice Chat") as demo:
     gr.HTML(
         """
         <div style='text-align: center'>
@@ -155,6 +155,7 @@ with gr.Blocks() as demo:
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
+            info="Your Google Gemini API Key. Get one at aistudio.google.com",
         )
     with gr.Row(visible=False) as row:
         with gr.Column():
@@ -176,7 +177,17 @@ with gr.Blocks() as demo:
                     "Aoede",
                 ],
                 value="Puck",
+                info="Select the voice tone you prefer.",
             )
+
+    gr.Markdown(
+        """
+        <div style="text-align: center; margin-top: 20px; font-size: 0.8em; color: gray;">
+            Powered by Google Gemini
+        </div>
+        """
+    )
+
     webrtc.stream(
         GeminiHandler(),
         inputs=[webrtc, api_key, voice],
