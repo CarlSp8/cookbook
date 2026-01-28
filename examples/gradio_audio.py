@@ -15,7 +15,7 @@
 """
 ## Setup
 
-The gradio-webrtc install fails unless you have ffmpeg@6, on mac:
+The fastrtc install fails unless you have ffmpeg@6, on mac:
 
 ```
 brew uninstall ffmpeg
@@ -26,12 +26,13 @@ brew link ffmpeg@6
 Create a virtual python environment, then install the dependencies for this script:
 
 ```
-pip install websockets numpy gradio-webrtc "gradio>=5.9.1"
+pip install websockets numpy fastrtc "gradio>=5.9.1"
 ```
 
 If installation fails it may be
 
-Before running this script, ensure the `GOOGLE_API_KEY` environment
+Before running this script, you can set the `GOOGLE_API_KEY` environment variable,
+or enter it in the UI.
 
 ```
 $ export GOOGLE_API_KEY ='add your key here'
@@ -44,12 +45,10 @@ You can get an api-key from Google AI Studio (https://aistudio.google.com/apikey
 To run the script:
 
 ```
-python gemini_gradio_audio.py
+python examples/gradio_audio.py
 ```
 
-On the gradio page (http://127.0.0.1:7860/) click record, and talk, gemini will reply. But note that interruptions
-don't work.
-
+On the gradio page (http://127.0.0.1:7860/) click record, and talk, gemini will reply.
 """
 
 import os
@@ -58,23 +57,30 @@ import json
 import numpy as np
 import gradio as gr
 import websockets.sync.client
-from gradio_webrtc import StreamHandler, WebRTC
+from fastrtc import StreamHandler, WebRTC
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
-KEY_NAME="GOOGLE_API_KEY"
+KEY_NAME = "GOOGLE_API_KEY"
+
 
 # Configuration and Utilities
 class GeminiConfig:
     """Configuration settings for Gemini API."""
-    def __init__(self):
-        self.api_key = os.getenv(KEY_NAME)
+
+    def __init__(self, api_key=None):
+        self.api_key = api_key or os.getenv(KEY_NAME)
         self.host = "generativelanguage.googleapis.com"
         self.model = "models/gemini-2.5-flash-lite"
-        self.ws_url = f"wss://{self.host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key={self.api_key}"
+
+    @property
+    def ws_url(self):
+        return f"wss://{self.host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key={self.api_key}"
+
 
 class AudioProcessor:
     """Handles encoding and decoding of audio data."""
+
     @staticmethod
     def encode_audio(data, sample_rate):
         """Encodes audio data to base64."""
@@ -96,11 +102,20 @@ class AudioProcessor:
         audio_data = base64.b64decode(data)
         return np.frombuffer(audio_data, dtype=np.int16)
 
+
 # Gemini Interaction Handler
 class GeminiHandler(StreamHandler):
     """Handles streaming interactions with the Gemini API."""
-    def __init__(self, expected_layout="mono", output_sample_rate=24000, output_frame_size=480) -> None:
-        super().__init__(expected_layout, output_sample_rate, output_frame_size, input_sample_rate=24000)
+
+    def __init__(
+        self, expected_layout="mono", output_sample_rate=24000, output_frame_size=480
+    ) -> None:
+        super().__init__(
+            expected_layout,
+            output_sample_rate,
+            output_frame_size,
+            input_sample_rate=24000,
+        )
         self.config = GeminiConfig()
         self.ws = None
         self.all_output_data = None
@@ -114,11 +129,27 @@ class GeminiHandler(StreamHandler):
             output_frame_size=self.output_frame_size,
         )
 
+    def start_up(self):
+        """Initializes the handler, fetching API key from args if needed."""
+        self.wait_for_args_sync()
+        # args: [audio, api_key]
+        if len(self.latest_args) > 1 and self.latest_args[1]:
+            self.config.api_key = self.latest_args[1]
+
     def _initialize_websocket(self):
         """Initializes the WebSocket connection to the Gemini API."""
+        if not self.config.api_key:
+            print("API Key not found. WebSocket connection skipped.")
+            return
+
         try:
             self.ws = websockets.sync.client.connect(self.config.ws_url, timeout=3000)
-            initial_request = {"setup": {"model": self.config.model,"tools":[{"google_search": {}}]}}
+            initial_request = {
+                "setup": {
+                    "model": self.config.model,
+                    "tools": [{"google_search": {}}],
+                }
+            }
             self.ws.send(json.dumps(initial_request))
             setup_response = json.loads(self.ws.recv())
             print(f"Setup response: {setup_response}")
@@ -135,16 +166,23 @@ class GeminiHandler(StreamHandler):
             if not self.ws:
                 self._initialize_websocket()
 
+            if not self.ws:
+                return
+
             sample_rate, array = frame
             message = {"realtimeInput": {"mediaChunks": []}}
 
             if sample_rate > 0 and array is not None:
                 array = array.squeeze()
-                audio_data = self.audio_processor.encode_audio(array, self.output_sample_rate)
-                message["realtimeInput"]["mediaChunks"].append({
-                    "mimeType": f"audio/pcm;rate={self.output_sample_rate}",
-                    "data": audio_data["realtimeInput"]["mediaChunks"][0]["data"],
-                })
+                audio_data = self.audio_processor.encode_audio(
+                    array, self.output_sample_rate
+                )
+                message["realtimeInput"]["mediaChunks"].append(
+                    {
+                        "mimeType": f"audio/pcm;rate={self.output_sample_rate}",
+                        "data": audio_data["realtimeInput"]["mediaChunks"][0]["data"],
+                    }
+                )
 
             if message["realtimeInput"]["mediaChunks"]:
                 self.ws.send(json.dumps(message))
@@ -163,17 +201,22 @@ class GeminiHandler(StreamHandler):
                 if self.all_output_data is None:
                     self.all_output_data = audio_array
                 else:
-                    self.all_output_data = np.concatenate((self.all_output_data, audio_array))
+                    self.all_output_data = np.concatenate(
+                        (self.all_output_data, audio_array)
+                    )
 
                 while self.all_output_data.shape[-1] >= self.output_frame_size:
-                    yield (self.output_sample_rate, self.all_output_data[: self.output_frame_size].reshape(1, -1))
+                    yield (
+                        self.output_sample_rate,
+                        self.all_output_data[: self.output_frame_size].reshape(1, -1),
+                    )
                     self.all_output_data = self.all_output_data[self.output_frame_size :]
 
     def generator(self):
         """Generates audio output from the WebSocket stream."""
         while True:
             if not self.ws:
-                print("WebSocket not connected")
+                # print("WebSocket not connected") # Reduce noise
                 yield None
                 continue
 
@@ -186,7 +229,7 @@ class GeminiHandler(StreamHandler):
             except TimeoutError:
                 print("Timeout waiting for server response")
                 yield None
-            except Exception as e:
+            except Exception:
                 yield None
 
     def emit(self) -> tuple[int, np.ndarray] | None:
@@ -222,43 +265,58 @@ class GeminiHandler(StreamHandler):
             print(f"Connection check failed: {str(e)}")
             return False
 
-# Main Gradio Interface
-def registry(
-        name: str,
-        token: str | None = None,
-        **kwargs
-):
-    """Sets up and returns the Gradio interface."""
-    api_key = token or os.environ.get(KEY_NAME)
-    if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
+# Main Gradio Interface
+def registry(name: str, token: str | None = None, **kwargs):
+    """Sets up and returns the Gradio interface."""
+    # Prioritize token (from kwargs/Spaces) -> env var
+    env_key = os.environ.get(KEY_NAME)
+    api_key_value = token or env_key
+
+    # We do NOT raise ValueError here anymore, but let the UI handle it.
+
+    interface = gr.Blocks(theme=gr.themes.Soft(), title="Gemini API Voice Chat")
     with interface:
+        gr.HTML(
+            """
+            <div style='text-align: center; margin-bottom: 20px;'>
+                <h1>Gemini API Voice Chat 🗣️</h1>
+                <p>Speak with Gemini using real-time audio streaming.</p>
+                <p><small>Powered by <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google Gemini</a> and <a href="https://fastrtc.org" target="_blank" rel="noopener noreferrer">FastRTC</a>.</small></p>
+            </div>
+            """
+        )
+
+        with gr.Row():
+            api_key_input = gr.Textbox(
+                label="Gemini API Key",
+                value=api_key_value if api_key_value else "",
+                placeholder="Enter your Gemini API Key (if not set in env)",
+                type="password",
+                visible=not api_key_value,  # Show if not available
+            )
+
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
-                gr.HTML(
-                    """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
-                    </div>
-                    """
-                )
                 gemini_handler = GeminiHandler()
                 with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+                    audio = WebRTC(
+                        label="Voice Chat", modality="audio", mode="send-receive"
+                    )
 
                 audio.stream(
                     gemini_handler,
-                    inputs=[audio],
+                    inputs=[audio, api_key_input],
                     outputs=[audio],
                     time_limit=600,
-                    concurrency_limit=10
+                    concurrency_limit=10,
                 )
     return interface
 
-# Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+
+if __name__ == "__main__":
+    # Launch the Gradio interface
+    gr.load(
+        name="gemini-2.5-flash-lite",
+        src=registry,
+    ).launch()
