@@ -1,0 +1,2 @@
+/app/examples/fastrtc_ui.py:142: DeprecationWarning: The 'theme' parameter in the Blocks constructor will be removed in Gradio 6.0. You will need to pass 'theme' to Blocks.launch() instead.
+  with gr.Blocks(theme=gr.themes.Soft()) as demo:
