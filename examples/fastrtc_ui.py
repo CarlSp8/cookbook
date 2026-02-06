@@ -139,7 +139,7 @@ class GeminiHandler(AsyncStreamHandler):
         self.quit.set()
 
 
-with gr.Blocks() as demo:
+with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.HTML(
         """
         <div style='text-align: center'>
@@ -150,21 +150,25 @@ with gr.Blocks() as demo:
     """
     )
     with gr.Row() as api_key_row:
-        api_key = gr.Textbox(
-            label="API Key",
-            placeholder="Enter your API Key",
-            value=os.getenv("GOOGLE_API_KEY", ""),
-            type="password",
-        )
+        with gr.Column(scale=4):
+            api_key = gr.Textbox(
+                label="API Key",
+                placeholder="Enter your API Key",
+                value=os.getenv("GOOGLE_API_KEY", ""),
+                type="password",
+                info="Your Google API Key from AI Studio",
+            )
+        with gr.Column(scale=1):
+            start_btn = gr.Button("Start", variant="primary")
     with gr.Row(visible=False) as row:
         with gr.Column():
             webrtc = WebRTC(
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
-                icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+                icon="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
             )
             voice = gr.Dropdown(
                 label="Voice",
@@ -184,8 +188,17 @@ with gr.Blocks() as demo:
         time_limit=90,
         concurrency_limit=2,
     )
+
+    def start_chat():
+        return gr.update(visible=False), gr.update(visible=True)
+
     api_key.submit(
-        lambda: (gr.update(visible=False), gr.update(visible=True)),
+        start_chat,
+        None,
+        [api_key_row, row],
+    )
+    start_btn.click(
+        start_chat,
         None,
         [api_key_row, row],
     )
