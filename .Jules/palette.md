@@ -1,0 +1,3 @@
+## 2025-05-15 - FastRTC Component Branding and Accessibility
+**Learning:** The `fastrtc.WebRTC` component supports direct customization of visual elements like `pulse_color` and `icon`, which is crucial for maintaining brand consistency (e.g., Gemini Blue) within the component itself, rather than relying on external CSS. Also, `gr.HTML` components are frequently used for instructions but often lack accessible link attributes (`target="_blank"`, descriptive text).
+**Action:** Always check `fastrtc.WebRTC` instantiation for opportunities to align `pulse_color` with the design system. Review all `gr.HTML` blocks for link accessibility.
