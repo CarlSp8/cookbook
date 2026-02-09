@@ -186,7 +186,7 @@ class GeminiHandler(StreamHandler):
             except TimeoutError:
                 print("Timeout waiting for server response")
                 yield None
-            except Exception as e:
+            except Exception:
                 yield None
 
     def emit(self) -> tuple[int, np.ndarray] | None:
@@ -233,15 +233,15 @@ def registry(
     if not api_key:
         raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
+    interface = gr.Blocks(theme=gr.themes.Soft())
     with interface:
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
-                gr.HTML(
+                gr.Markdown(
                     """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
-                    </div>
+                    # Gemini API Voice Chat
+
+                    Click the **Voice Chat** button below to start speaking. Ensure your microphone is enabled.
                     """
                 )
                 gemini_handler = GeminiHandler()
