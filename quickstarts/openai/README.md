@@ -47,15 +47,12 @@ console.log(response.choices[0].message.content);
 | [Basic Chat](./Basic_Chat.ipynb) | Simple text generation and chat completions | Python |
 | [Basic Chat (JS)](./Basic_Chat.js) | Simple text generation and chat completions | JavaScript |
 | [Working with Images](./Working_with_Images.ipynb) | Multimodal prompts with images | Python |
-| [Structured Outputs](./Structured_Outputs.ipynb) | Extract structured data and JSON | Python |
 | [Embeddings](./Embeddings.ipynb) | Generate text embeddings | Python |
 
 ### Advanced Guides
 | Guide | Description | Language |
 |-------|-------------|----------|
-| [Batch Processing](./Batch_Processing.ipynb) | Process multiple requests efficiently | Python |
-| [Function Calling](./Function_Calling.ipynb) | Use tools and function calling | Python |
-| [Streaming Responses](./Streaming.ipynb) | Stream responses in real-time | Python |
+| *(See main Getting Started guide for advanced features)* | Structured outputs, function calling, batch processing, streaming | Python |
 
 ### Migration & Comparison
 | Guide | Description |
