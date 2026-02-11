@@ -342,9 +342,10 @@ python3 generate_index.py  # Regenerate index
 
 After setup, you'll have access to:
 
-- **125+ Jupyter Notebooks**: Interactive tutorials covering all Gemini API features
-- **Python Scripts**: Standalone examples for specific use cases
-- **Web Interface**: Browse all resources with search functionality
+- **46 Quickstart Tutorials**: Step-by-step guides covering introductory topics and specific API features
+- **36 Practical Examples**: Real-world use cases demonstrating how to combine multiple features
+- **Python Scripts**: Standalone examples for specific use cases (e.g., Gradio audio, LiveAPI)
+- **Web Interface**: Browse all 82 resources with search functionality
 - **Documentation**: Comprehensive guides and API references
 
 ## Getting Help
