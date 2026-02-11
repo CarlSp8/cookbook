@@ -199,3 +199,7 @@ If you have authored a new guide from scratch, you are welcome to include a byli
     2.  Make your changes in Colab.
     3.  Use Colab's "File" -> "Save a copy in GitHub" menu option to save it back to the same branch.
 * For Pull Requests (PRs), it's helpful to include a direct Colab link to the notebook version in the PR head for easier review: `https://colab.research.google.com/github/{USER}/{REPO}/blob/{BRANCH}/{PATH}.ipynb`
+
+# Thank you
+
+Thank you for your interest in contributing to the Gemini API Cookbook! Your contributions help make this resource better for the entire community. We appreciate your time and effort.
