@@ -122,11 +122,10 @@ class AudioLoop:
 
         image_io = io.BytesIO()
         img.save(image_io, format="jpeg")
-        image_io.seek(0)
 
         mime_type = "image/jpeg"
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        image_bytes = base64.b64encode(image_io.getvalue()).decode()
+        return {"mime_type": mime_type, "data": image_bytes}
 
     async def get_frames(self):
         # This takes about a second, and will block the whole program
@@ -214,8 +213,11 @@ class AudioLoop:
             # For interruptions to work, we need to stop playback.
             # So empty out the audio queue because it may have loaded
             # much more audio than has played yet.
-            while not self.audio_in_queue.empty():
-                self.audio_in_queue.get_nowait()
+            try:
+                while True:
+                    self.audio_in_queue.get_nowait()
+            except asyncio.QueueEmpty:
+                pass
 
     async def play_audio(self):
         stream = await asyncio.to_thread(

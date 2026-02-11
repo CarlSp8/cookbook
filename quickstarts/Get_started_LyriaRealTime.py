@@ -50,6 +50,9 @@ CHANNELS=2
 MODEL='models/lyria-realtime-exp'
 OUTPUT_RATE=48000
 
+# Build scale lookup dictionary once for O(1) lookups
+SCALE_LOOKUP = {member.name.lower(): member for member in types.Scale}
+
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 if api_key is None:
@@ -130,11 +133,8 @@ async def main():
                     del config.scale
                     print(f"Setting Scale to AUTO, which requires resetting context.")
                   else:
-                    found_scale_enum_member = None
-                    for scale_member in types.Scale: # types.Scale is an enum
-                        if scale_member.name.lower() == prompt_str.lower():
-                            found_scale_enum_member = scale_member
-                            break
+                    # Use O(1) dictionary lookup instead of O(n) linear search
+                    found_scale_enum_member = SCALE_LOOKUP.get(prompt_str.lower())
                     if found_scale_enum_member:
                         print(f"Setting scale to {found_scale_enum_member.name}, which requires resetting context.")
                         config.scale = found_scale_enum_member

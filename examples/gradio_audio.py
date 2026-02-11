@@ -136,17 +136,10 @@ class GeminiHandler(StreamHandler):
                 self._initialize_websocket()
 
             sample_rate, array = frame
-            message = {"realtimeInput": {"mediaChunks": []}}
-
             if sample_rate > 0 and array is not None:
                 array = array.squeeze()
-                audio_data = self.audio_processor.encode_audio(array, self.output_sample_rate)
-                message["realtimeInput"]["mediaChunks"].append({
-                    "mimeType": f"audio/pcm;rate={self.output_sample_rate}",
-                    "data": audio_data["realtimeInput"]["mediaChunks"][0]["data"],
-                })
-
-            if message["realtimeInput"]["mediaChunks"]:
+                # encode_audio already returns the full message structure
+                message = self.audio_processor.encode_audio(array, self.output_sample_rate)
                 self.ws.send(json.dumps(message))
         except Exception as e:
             print(f"Error in receive: {str(e)}")
