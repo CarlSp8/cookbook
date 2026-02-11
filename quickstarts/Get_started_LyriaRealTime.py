@@ -83,7 +83,6 @@ async def main():
                     print("Prompt was filtered out: ", message.filtered_prompt)
                 else:
                     print("Unknown error occured with message: ", message)
-                await asyncio.sleep(10**-12)
 
         async def send():
             await asyncio.sleep(5) # Allow initial prompt to play a bit
@@ -130,15 +129,13 @@ async def main():
                     del config.scale
                     print(f"Setting Scale to AUTO, which requires resetting context.")
                   else:
-                    found_scale_enum_member = None
-                    for scale_member in types.Scale: # types.Scale is an enum
-                        if scale_member.name.lower() == prompt_str.lower():
-                            found_scale_enum_member = scale_member
-                            break
-                    if found_scale_enum_member:
+                    scale_value = prompt_str.removeprefix('scale=').upper()
+                    try:
+                        # Use direct enum access for O(1) lookup instead of linear search
+                        found_scale_enum_member = types.Scale[scale_value]
                         print(f"Setting scale to {found_scale_enum_member.name}, which requires resetting context.")
                         config.scale = found_scale_enum_member
-                    else:
+                    except KeyError:
                         print("Error: Matching enum not found.")
                   await session.set_music_generation_config(config=config)
                   await session.reset_context()

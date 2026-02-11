@@ -78,17 +78,7 @@ class AudioProcessor:
     @staticmethod
     def encode_audio(data, sample_rate):
         """Encodes audio data to base64."""
-        encoded = base64.b64encode(data.tobytes()).decode("UTF-8")
-        return {
-            "realtimeInput": {
-                "mediaChunks": [
-                    {
-                        "mimeType": f"audio/pcm;rate={sample_rate}",
-                        "data": encoded,
-                    }
-                ],
-            },
-        }
+        return base64.b64encode(data.tobytes()).decode("UTF-8")
 
     @staticmethod
     def process_audio_response(data):
@@ -104,6 +94,8 @@ class GeminiHandler(StreamHandler):
         self.config = GeminiConfig()
         self.ws = None
         self.all_output_data = None
+        self.output_buffer = []  # Use list for efficient accumulation
+        self.buffer_size = 0  # Track buffer size to avoid repeated calculations
         self.audio_processor = AudioProcessor()
 
     def copy(self):
@@ -143,7 +135,7 @@ class GeminiHandler(StreamHandler):
                 audio_data = self.audio_processor.encode_audio(array, self.output_sample_rate)
                 message["realtimeInput"]["mediaChunks"].append({
                     "mimeType": f"audio/pcm;rate={self.output_sample_rate}",
-                    "data": audio_data["realtimeInput"]["mediaChunks"][0]["data"],
+                    "data": audio_data,
                 })
 
             if message["realtimeInput"]["mediaChunks"]:
@@ -154,20 +146,41 @@ class GeminiHandler(StreamHandler):
                 self.ws.close()
             self.ws = None
 
+    def _consolidate_buffer(self):
+        """Consolidates the output buffer into all_output_data."""
+        if self.output_buffer:
+            self.all_output_data = np.concatenate([self.all_output_data] + self.output_buffer)
+            self.output_buffer = []
+            self.buffer_size = 0
+
     def _process_server_content(self, content):
         """Processes audio output data from the WebSocket response."""
         for part in content.get("parts", []):
             data = part.get("inlineData", {}).get("data", "")
             if data:
                 audio_array = self.audio_processor.process_audio_response(data)
+                # Use list accumulation to avoid O(n²) complexity
                 if self.all_output_data is None:
                     self.all_output_data = audio_array
                 else:
-                    self.all_output_data = np.concatenate((self.all_output_data, audio_array))
+                    self.output_buffer.append(audio_array)
+                    self.buffer_size += audio_array.shape[-1]
 
-                while self.all_output_data.shape[-1] >= self.output_frame_size:
+                # Periodically consolidate buffer to prevent excessive memory usage
+                if len(self.output_buffer) > 10:
+                    self._consolidate_buffer()
+
+                # Calculate total available data
+                total_size = self.all_output_data.shape[-1] + self.buffer_size
+                
+                while total_size >= self.output_frame_size:
+                    # Consolidate buffer if needed to yield a frame
+                    if self.all_output_data.shape[-1] < self.output_frame_size and self.output_buffer:
+                        self._consolidate_buffer()
+                    
                     yield (self.output_sample_rate, self.all_output_data[: self.output_frame_size].reshape(1, -1))
                     self.all_output_data = self.all_output_data[self.output_frame_size :]
+                    total_size = self.all_output_data.shape[-1] + self.buffer_size
 
     def generator(self):
         """Generates audio output from the WebSocket stream."""
