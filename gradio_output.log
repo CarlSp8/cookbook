@@ -1,0 +1,9 @@
+[31m[1mWARNING[0m  gradio-webrtc is deprecated. Please use fastrtc instead. pip install fastrtc. There are no breaking changes. See https://fastrtc.org for more information.
+Traceback (most recent call last):
+  File "/app/examples/gradio_audio.py", line 61, in <module>
+    from gradio_webrtc import StreamHandler, WebRTC
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio_webrtc/__init__.py", line 9, in <module>
+    from .credentials import (
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio_webrtc/credentials.py", line 4, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'

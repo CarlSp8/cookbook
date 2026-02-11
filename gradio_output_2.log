@@ -1,0 +1,11 @@
+[31m[1mWARNING[0m  gradio-webrtc is deprecated. Please use fastrtc instead. pip install fastrtc. There are no breaking changes. See https://fastrtc.org for more information.
+Traceback (most recent call last):
+  File "/app/examples/gradio_audio.py", line 61, in <module>
+    from gradio_webrtc import StreamHandler, WebRTC
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio_webrtc/__init__.py", line 14, in <module>
+    from .reply_on_pause import AlgoOptions, ReplyOnPause, SileroVadOptions
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio_webrtc/reply_on_pause.py", line 12, in <module>
+    from gradio_webrtc.webrtc import EmitType, StreamHandler
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio_webrtc/webrtc.py", line 42, in <module>
+    from gradio import wasm_utils
+ImportError: cannot import name 'wasm_utils' from 'gradio' (/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/gradio/__init__.py). Did you mean: 'image_utils'?
