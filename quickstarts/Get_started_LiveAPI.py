@@ -46,32 +46,26 @@ python Get_started_LiveAPI.py --mode screen
 """
 
 import asyncio
-import base64
-import io
 import os
 import sys
 import traceback
 
 import cv2
 import pyaudio
-import PIL.Image
-import mss
 
 import argparse
 
 from google import genai
+from liveapi_audio_utils import (
+    FORMAT, CHANNELS, SEND_SAMPLE_RATE, RECEIVE_SAMPLE_RATE, CHUNK_SIZE,
+    get_frame, get_screen, setup_audio_input_stream, setup_audio_output_stream
+)
 
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
 
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
-
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SEND_SAMPLE_RATE = 16000
-RECEIVE_SAMPLE_RATE = 24000
-CHUNK_SIZE = 1024
 
 MODEL = "gemini-2.5-flash-native-audio-preview-12-2025"
 
@@ -108,25 +102,7 @@ class AudioLoop:
             await self.session.send(input=text or ".", end_of_turn=True)
 
     def _get_frame(self, cap):
-        # Read the frameq
-        ret, frame = cap.read()
-        # Check if the frame was read successfully
-        if not ret:
-            return None
-        # Fix: Convert BGR to RGB color space
-        # OpenCV captures in BGR but PIL expects RGB format
-        # This prevents the blue tint in the video feed
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        img = PIL.Image.fromarray(frame_rgb)  # Now using RGB frame
-        img.thumbnail([1024, 1024])
-
-        image_io = io.BytesIO()
-        img.save(image_io, format="jpeg")
-        image_io.seek(0)
-
-        mime_type = "image/jpeg"
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        return get_frame(cap)
 
     async def get_frames(self):
         # This takes about a second, and will block the whole program
@@ -148,21 +124,7 @@ class AudioLoop:
         cap.release()
 
     def _get_screen(self):
-        sct = mss.mss()
-        monitor = sct.monitors[0]
-
-        i = sct.grab(monitor)
-
-        mime_type = "image/jpeg"
-        image_bytes = mss.tools.to_png(i.rgb, i.size)
-        img = PIL.Image.open(io.BytesIO(image_bytes))
-
-        image_io = io.BytesIO()
-        img.save(image_io, format="jpeg")
-        image_io.seek(0)
-
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        return get_screen()
 
     async def get_screen(self):
 
@@ -181,16 +143,7 @@ class AudioLoop:
             await self.session.send(input=msg)
 
     async def listen_audio(self):
-        mic_info = pya.get_default_input_device_info()
-        self.audio_stream = await asyncio.to_thread(
-            pya.open,
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=SEND_SAMPLE_RATE,
-            input=True,
-            input_device_index=mic_info["index"],
-            frames_per_buffer=CHUNK_SIZE,
-        )
+        self.audio_stream = await setup_audio_input_stream(pya, CHUNK_SIZE)
         if __debug__:
             kwargs = {"exception_on_overflow": False}
         else:
@@ -218,13 +171,7 @@ class AudioLoop:
                 self.audio_in_queue.get_nowait()
 
     async def play_audio(self):
-        stream = await asyncio.to_thread(
-            pya.open,
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=RECEIVE_SAMPLE_RATE,
-            output=True,
-        )
+        stream = await setup_audio_output_stream(pya)
         while True:
             bytestream = await self.audio_in_queue.get()
             await asyncio.to_thread(stream.write, bytestream)
