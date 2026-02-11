@@ -61,16 +61,18 @@ import argparse
 
 from websockets.asyncio.client import connect
 
-# Add parent directory to path for shared utils import
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+# Import shared audio constants from parent directory
+# Using importlib for cleaner import handling
+import importlib.util
+_liveapi_utils_path = os.path.join(os.path.dirname(__file__), '..', 'liveapi_utils.py')
+_spec = importlib.util.spec_from_file_location("liveapi_utils", _liveapi_utils_path)
+_liveapi_utils = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_liveapi_utils)
 
-# Import shared audio constants, but override CHUNK_SIZE for websockets
-from liveapi_utils import (
-    FORMAT,
-    CHANNELS,
-    SEND_SAMPLE_RATE,
-    RECEIVE_SAMPLE_RATE,
-)
+FORMAT = _liveapi_utils.FORMAT
+CHANNELS = _liveapi_utils.CHANNELS
+SEND_SAMPLE_RATE = _liveapi_utils.SEND_SAMPLE_RATE
+RECEIVE_SAMPLE_RATE = _liveapi_utils.RECEIVE_SAMPLE_RATE
 
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
