@@ -1,0 +1,44 @@
+# Core dependencies for Gemini API Cookbook
+# These packages are required to run most examples and notebooks
+
+# Jupyter and notebook support
+jupyter>=1.0.0
+notebook>=7.0.0
+ipykernel>=6.25.0
+
+# Google AI and API clients
+google-generativeai>=0.3.0
+google-api-python-client>=2.0.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# Optional dependencies for specific examples
+# Uncomment if needed
+
+# For Gradio examples
+# gradio>=5.9.1
+# gradio-webrtc>=0.0.1
+
+# For real-time communication
+# websockets>=12.0
+
+# For data processing
+# numpy>=1.24.0
+# pandas>=2.0.0
+
+# For embeddings and ML examples
+# scikit-learn>=1.3.0
+
+# For web scraping examples
+# beautifulsoup4>=4.12.0
+# requests>=2.31.0
+
+# For vector database examples
+# chromadb>=0.4.0
+# weaviate-client>=3.0.0
+# qdrant-client>=1.7.0
+
+# For LLM framework examples
+# langchain>=0.1.0
+# llamaindex>=0.9.0
