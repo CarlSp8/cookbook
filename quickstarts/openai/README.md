@@ -49,6 +49,12 @@ console.log(response.choices[0].message.content);
 | [Working with Images](./Working_with_Images.ipynb) | Multimodal prompts with images | Python |
 | [Embeddings](./Embeddings.ipynb) | Generate text embeddings | Python |
 
+### Practical Resources
+| Guide | Description |
+|-------|-------------|
+| [Quick Reference](./Quick_Reference.md) | **⚡ POPULAR!** Cheat sheet with common patterns |
+| [Real-World Examples](./Real_World_Examples.md) | **🔥 NEW!** 8 practical examples (chatbot, API, search, etc.) |
+
 ### Advanced Guides
 | Guide | Description | Language |
 |-------|-------------|----------|
@@ -57,6 +63,7 @@ console.log(response.choices[0].message.content);
 ### Migration & Comparison
 | Guide | Description |
 |-------|-------------|
+| [Quick Reference](./Quick_Reference.md) | **⚡ NEW!** Cheat sheet with common patterns and examples |
 | [OpenAI to Gemini Migration](./Migration_Guide.md) | Step-by-step migration guide |
 | [Feature Comparison](./Feature_Comparison.md) | What works, what doesn't |
 | [Limitations & Workarounds](./Limitations.md) | Known limitations and solutions |
