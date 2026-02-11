@@ -298,10 +298,9 @@ Error caught:
 
 Explore more advanced features:
 
-- [Working with Images](./Working_with_Images.ipynb) - Add images to your prompts (Python)
-- [Structured Outputs](./Structured_Outputs.ipynb) - Get JSON responses (Python)
-- [Function Calling](./Function_Calling.ipynb) - Use tools and functions (Python)
-- [Embeddings](./Embeddings.ipynb) - Generate text embeddings (Python)
+- [Full OpenAI Compatibility Guide](../Get_started_OpenAI_Compatibility.ipynb) - Complete guide with advanced features
+- [OpenAI SDK README](./README.md) - Overview of all available guides
+- [Quick Reference](./Quick_Reference.md) - Cheat sheet with common patterns
 
 For more information:
 - [OpenAI SDK Compatibility Docs](https://ai.google.dev/gemini-api/docs/openai)

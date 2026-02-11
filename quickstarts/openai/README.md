@@ -58,15 +58,15 @@ console.log(response.choices[0].message.content);
 ### Advanced Guides
 | Guide | Description | Language |
 |-------|-------------|----------|
-| *(See main Getting Started guide for advanced features)* | Structured outputs, function calling, batch processing, streaming | Python |
+| [Getting Started (Full)](../Get_started_OpenAI_Compatibility.ipynb) | Comprehensive guide with all advanced features: structured outputs, function calling, batch processing, streaming | Python |
 
 ### Migration & Comparison
 | Guide | Description |
 |-------|-------------|
-| [Quick Reference](./Quick_Reference.md) | **⚡ NEW!** Cheat sheet with common patterns and examples |
 | [OpenAI to Gemini Migration](./Migration_Guide.md) | Step-by-step migration guide |
 | [Feature Comparison](./Feature_Comparison.md) | What works, what doesn't |
 | [Limitations & Workarounds](./Limitations.md) | Known limitations and solutions |
+| [Quick Reference](./Quick_Reference.md) | Cheat sheet with common patterns and examples |
 
 ## ✅ What Works with OpenAI SDK
 
