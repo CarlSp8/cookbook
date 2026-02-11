@@ -95,6 +95,7 @@ class GeminiHandler(StreamHandler):
         self.ws = None
         self.all_output_data = None
         self.output_buffer = []  # Use list for efficient accumulation
+        self.buffer_size = 0  # Track buffer size to avoid repeated calculations
         self.audio_processor = AudioProcessor()
 
     def copy(self):
@@ -145,6 +146,13 @@ class GeminiHandler(StreamHandler):
                 self.ws.close()
             self.ws = None
 
+    def _consolidate_buffer(self):
+        """Consolidates the output buffer into all_output_data."""
+        if self.output_buffer:
+            self.all_output_data = np.concatenate([self.all_output_data] + self.output_buffer)
+            self.output_buffer = []
+            self.buffer_size = 0
+
     def _process_server_content(self, content):
         """Processes audio output data from the WebSocket response."""
         for part in content.get("parts", []):
@@ -156,24 +164,23 @@ class GeminiHandler(StreamHandler):
                     self.all_output_data = audio_array
                 else:
                     self.output_buffer.append(audio_array)
+                    self.buffer_size += audio_array.shape[-1]
 
                 # Periodically consolidate buffer to prevent excessive memory usage
                 if len(self.output_buffer) > 10:
-                    self.all_output_data = np.concatenate([self.all_output_data] + self.output_buffer)
-                    self.output_buffer = []
+                    self._consolidate_buffer()
 
                 # Calculate total available data
-                total_size = self.all_output_data.shape[-1] + sum(arr.shape[-1] for arr in self.output_buffer)
+                total_size = self.all_output_data.shape[-1] + self.buffer_size
                 
                 while total_size >= self.output_frame_size:
                     # Consolidate buffer if needed to yield a frame
                     if self.all_output_data.shape[-1] < self.output_frame_size and self.output_buffer:
-                        self.all_output_data = np.concatenate([self.all_output_data] + self.output_buffer)
-                        self.output_buffer = []
+                        self._consolidate_buffer()
                     
                     yield (self.output_sample_rate, self.all_output_data[: self.output_frame_size].reshape(1, -1))
                     self.all_output_data = self.all_output_data[self.output_frame_size :]
-                    total_size = self.all_output_data.shape[-1] + sum(arr.shape[-1] for arr in self.output_buffer)
+                    total_size = self.all_output_data.shape[-1] + self.buffer_size
 
     def generator(self):
         """Generates audio output from the WebSocket stream."""
