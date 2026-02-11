@@ -54,6 +54,10 @@ import traceback
 import pyaudio
 
 from google import genai
+from liveapi_audio_utils import (
+    FORMAT, CHANNELS, SEND_SAMPLE_RATE, RECEIVE_SAMPLE_RATE, CHUNK_SIZE,
+    setup_audio_input_stream, setup_audio_output_stream
+)
 
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
@@ -61,12 +65,6 @@ if sys.version_info < (3, 11, 0):
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
 
-
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SEND_SAMPLE_RATE = 16000
-RECEIVE_SAMPLE_RATE = 24000
-CHUNK_SIZE = 1024
 
 pya = pyaudio.PyAudio()
 
@@ -99,16 +97,7 @@ class AudioLoop:
 
 
     async def listen_audio(self):
-        mic_info = pya.get_default_input_device_info()
-        self.audio_stream = await asyncio.to_thread(
-            pya.open,
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=SEND_SAMPLE_RATE,
-            input=True,
-            input_device_index=mic_info["index"],
-            frames_per_buffer=CHUNK_SIZE,
-        )
+        self.audio_stream = await setup_audio_input_stream(pya, CHUNK_SIZE)
         if __debug__:
             kwargs = {"exception_on_overflow": False}
         else:
@@ -141,13 +130,7 @@ class AudioLoop:
                 self.audio_in_queue.get_nowait()
 
     async def play_audio(self):
-        stream = await asyncio.to_thread(
-            pya.open,
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=RECEIVE_SAMPLE_RATE,
-            output=True,
-        )
+        stream = await setup_audio_output_stream(pya)
         while True:
             bytestream = await self.audio_in_queue.get()
             await asyncio.to_thread(stream.write, bytestream)

@@ -48,18 +48,22 @@ python live_api_starter.py --mode screen
 import asyncio
 import base64
 import json
-import io
 import os
 import sys
 import traceback
 
 import cv2
 import pyaudio
-import PIL.Image
-import mss
 import argparse
 
 from websockets.asyncio.client import connect
+
+# Add parent directory to path to import shared utilities
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from liveapi_audio_utils import (
+    FORMAT, CHANNELS, SEND_SAMPLE_RATE, RECEIVE_SAMPLE_RATE,
+    get_frame, get_screen
+)
 
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
@@ -67,10 +71,7 @@ if sys.version_info < (3, 11, 0):
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
 
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SEND_SAMPLE_RATE = 16000
-RECEIVE_SAMPLE_RATE = 24000
+# Note: websockets version uses a smaller chunk size for lower latency
 CHUNK_SIZE = 512
 
 host = "generativelanguage.googleapis.com"
@@ -112,26 +113,7 @@ class AudioLoop:
             await self.ws.send(json.dumps(msg))
 
     def _get_frame(self, cap):
-        # Read the frame
-        ret, frame = cap.read()
-        # Check if the frame was read successfully
-        if not ret:
-            return None
-
-        # Fix: Convert BGR to RGB color space
-        # OpenCV captures in BGR but PIL expects RGB format
-        # This prevents the blue tint in the video feed
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        img = PIL.Image.fromarray(frame_rgb)  # Now using RGB frame
-        img.thumbnail([1024, 1024])
-
-        image_io = io.BytesIO()
-        img.save(image_io, format="jpeg")
-        image_io.seek(0)
-
-        mime_type = "image/jpeg"
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        return get_frame(cap)
 
     async def get_frames(self):
         # This takes about a second, and will block the whole program
@@ -153,20 +135,7 @@ class AudioLoop:
         cap.release()
 
     def _get_screen(self):
-        sct = mss.mss()
-        monitor = sct.monitors[0]
-        
-        i = sct.grab(monitor)
-        mime_type = "image/jpeg"
-        image_bytes = mss.tools.to_png(i.rgb, i.size)
-        img = PIL.Image.open(io.BytesIO(image_bytes))
-        
-        image_io = io.BytesIO()
-        img.save(image_io, format="jpeg")
-        image_io.seek(0)
-        
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        return get_screen()
 
     async def get_screen(self):
         while True:
