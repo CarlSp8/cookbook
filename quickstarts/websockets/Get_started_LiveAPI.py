@@ -61,17 +61,24 @@ import argparse
 
 from websockets.asyncio.client import connect
 
+# Add parent directory to path for shared utils import
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+# Import shared audio constants, but override CHUNK_SIZE for websockets
+from liveapi_utils import (
+    FORMAT,
+    CHANNELS,
+    SEND_SAMPLE_RATE,
+    RECEIVE_SAMPLE_RATE,
+)
+
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
 
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
 
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SEND_SAMPLE_RATE = 16000
-RECEIVE_SAMPLE_RATE = 24000
-CHUNK_SIZE = 512
+CHUNK_SIZE = 512  # Websockets uses a smaller chunk size
 
 host = "generativelanguage.googleapis.com"
 model = "gemini-2.5-flash-native-audio-latest"
