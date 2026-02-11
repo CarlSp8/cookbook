@@ -3,6 +3,9 @@
 This folder contains guides to help you explore all Gemini API features using complete end-to-end code examples.
 
 When you're confident in your Gemini capabilities, the [examples](https://github.com/google-gemini/cookbook/tree/main/examples/) folder will be an endless source of inspiration on how to mix those capabilities together.
+
+> **JavaScript/TypeScript Quickstarts**: Looking for JavaScript examples? Check out the [javascript](./javascript/) subfolder for JS/TS versions of many of these quickstarts!
+
 <br><br>
 
 ---

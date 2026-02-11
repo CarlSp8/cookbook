@@ -64,7 +64,7 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 /* Markdown (render)
 ### Choose a model
 
-Now select the model you want to use in this guide, either by selecting one in the list or writing it down. Keep in mind that some models, like the 2.5 ones are thinking models and thus take slightly more time to respond (cf. [thinking notebook](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Get_started_thinking.ipynb) for more details and in particular learn how to switch the thinking off).
+Now select the model you want to use in this guide, either by selecting one in the list or writing it down. Keep in mind that some models, like the 2.5 ones are thinking models and thus take slightly more time to respond (cf. [thinking notebook](https://github.com/google-gemini/cookbook/blob/main/quickstarts/Get_started_thinking.ipynb) for more details and in particular learn how to switch the thinking off).
 
 For more information about all Gemini models, check the [documentation](https://ai.google.dev/gemini-api/docs/models/gemini) for extended information on each of them.
 */
@@ -352,7 +352,7 @@ Deleted files/ih9sjrj7h21x
 ## Next Steps
 ### Useful API references:
 
-For more information about the File API, check its [API reference](https://ai.google.dev/api/files). You will also find more code samples [in this folder](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/).
+For more information about the File API, check its [API reference](https://ai.google.dev/api/files). You will also find more code samples [in this folder](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/).
 
 ### Related examples
 
@@ -362,6 +362,6 @@ Check those examples using the File API to give you more ideas on how to use tha
 
 ### Continue your discovery of the Gemini API
 
-If you're not already familiar with it, learn how [tokens are counted](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Counting_Tokens.js). Then check how to use the File API to use [Audio](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Audio.js) or [Video_understanding](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Video_understanding.js) files with the Gemini API.
+If you're not already familiar with it, learn how [tokens are counted](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/Counting_Tokens.js). Then check how to use the File API to use [Audio](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/Audio.js) or [Video_understanding](https://github.com/google-gemini/cookbook/blob/main/quickstarts/Video_understanding.ipynb) files with the Gemini API.
 
 */
