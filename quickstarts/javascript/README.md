@@ -8,7 +8,7 @@ While you can explore the code samples directly here, we highly recommend openin
 
 ## About This Folder
 
-This is a growing collection of fun and practical examples demonstrating how to interact with the Gemini API in JavaScript and TypeScript. We're starting with foundational examples, and more advanced and diverse use cases will be added soon, just like the existing Python examples in the [`quickstart`](../quickstarts/) and [`examples`](../examples/) folders.
+This is a growing collection of fun and practical examples demonstrating how to interact with the Gemini API in JavaScript and TypeScript. We're starting with foundational examples, and more advanced and diverse use cases will be added soon, just like the existing Python examples in the parent [`quickstarts`](../) folder and the [`examples`](../../examples/) folder.
 
 Stay tuned, more JavaScript notebooks are on the way!
 

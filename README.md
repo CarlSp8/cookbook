@@ -41,7 +41,7 @@ Here are the recent additions and updates to the Gemini API and the Cookbook:
 
 ## 1. Quick Starts
 
-The [quickstarts section](https://github.com/google-gemini/cookbook/tree/main/quickstarts/) contains step-by-step tutorials to get you started with Gemini and learn about its specific features.
+The [quickstarts section](https://github.com/google-gemini/cookbook/tree/main/quickstarts/) contains step-by-step tutorials to get you started with Gemini and learn about its specific features. Most quickstarts are available as Python Jupyter notebooks, with JavaScript/TypeScript examples available in the [javascript subfolder](https://github.com/google-gemini/cookbook/tree/main/quickstarts/javascript/).
 
 **To begin, you'll need:**
 
