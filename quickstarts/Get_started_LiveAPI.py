@@ -49,6 +49,7 @@ import asyncio
 import base64
 import io
 import os
+import queue
 import sys
 import traceback
 
@@ -216,7 +217,7 @@ class AudioLoop:
             try:
                 while True:
                     self.audio_in_queue.get_nowait()
-            except asyncio.QueueEmpty:
+            except queue.Empty:
                 pass
 
     async def play_audio(self):
