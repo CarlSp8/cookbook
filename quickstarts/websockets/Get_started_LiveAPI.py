@@ -90,6 +90,8 @@ class AudioLoop:
 
         self.ws = None
         self.audio_stream = None
+        # Create PyAudio instance once to avoid resource leaks
+        self.pya = pyaudio.PyAudio()
 
     async def startup(self):
         setup_msg = {"setup": {"model": f"models/{model}"}}
@@ -163,9 +165,9 @@ class AudioLoop:
         
         image_io = io.BytesIO()
         img.save(image_io, format="jpeg")
-        image_io.seek(0)
         
-        image_bytes = image_io.read()
+        # Use getvalue() instead of seek() + read() for better performance
+        image_bytes = image_io.getvalue()
         return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
 
     async def get_screen(self):
@@ -185,10 +187,9 @@ class AudioLoop:
             await self.ws.send(json.dumps(msg))
 
     async def listen_audio(self):
-        pya = pyaudio.PyAudio()
-
-        mic_info = pya.get_default_input_device_info()
-        self.audio_stream = pya.open(
+        # Use the PyAudio instance created in __init__ to avoid resource leaks
+        mic_info = self.pya.get_default_input_device_info()
+        self.audio_stream = self.pya.open(
             format=FORMAT,
             channels=CHANNELS,
             rate=SEND_SAMPLE_RATE,
@@ -236,12 +237,16 @@ class AudioLoop:
                     # For interruptions to work, we need to empty out the audio queue
                     # Because it may have loaded much more audio than has played yet.
                     print("\nEnd of turn")
-                    while not self.audio_in_queue.empty():
-                        self.audio_in_queue.get_nowait()
+                    # Use exception handling to avoid race conditions
+                    while True:
+                        try:
+                            self.audio_in_queue.get_nowait()
+                        except asyncio.QueueEmpty:
+                            break
 
     async def play_audio(self):
-        pya = pyaudio.PyAudio()
-        stream = pya.open(
+        # Use the PyAudio instance created in __init__ to avoid resource leaks
+        stream = self.pya.open(
             format=FORMAT, channels=CHANNELS, rate=RECEIVE_SAMPLE_RATE, output=True
         )
         while True:
@@ -285,6 +290,10 @@ class AudioLoop:
         except ExceptionGroup as EG:
             self.audio_stream.close()
             traceback.print_exception(EG)
+        finally:
+            # Clean up PyAudio instance to properly release audio resources
+            if hasattr(self, 'pya'):
+                self.pya.terminate()
 
 
 if __name__ == "__main__":
