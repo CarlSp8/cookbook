@@ -21,6 +21,33 @@ This cookbook is organized into two main categories:
 We also showcase **Demos** in separate repositories, illustrating end-to-end applications of the Gemini API.
 <br><br>
 
+## 🚀 Run Locally
+
+You can run this cookbook locally on your machine with a convenient web interface:
+
+```bash
+# 1. Clone and setup
+git clone https://github.com/google-gemini/cookbook.git
+cd cookbook
+./setup_local.sh
+
+# 2. Add your API key to .env
+echo "GOOGLE_API_KEY='your-key-here'" > .env
+
+# 3. Start the local web server
+python3 serve_local.py
+```
+
+This will:
+- ✅ Set up a Python virtual environment with all dependencies
+- 📚 Generate a beautiful web interface to browse all tutorials
+- 🌐 Start a local server at `http://localhost:8000`
+- 🔍 Provide search functionality across all examples
+
+**For detailed instructions**, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+<br><br>
+
 ## What's New?
 
 Here are the recent additions and updates to the Gemini API and the Cookbook: 
