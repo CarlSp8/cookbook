@@ -121,7 +121,12 @@ slicedBlob = audioBlob.slice(0, 160 * 1024); // ~10,000 ms audio slice for 128 k
 
 slicedBase64 = await new Promise((resolve) => {
   const reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(',')[1]);
+  // Use substring with indexOf for better performance than split
+  reader.onloadend = () => {
+    const result = reader.result;
+    const commaIndex = result.indexOf(',');
+    resolve(result.substring(commaIndex + 1));
+  };
   reader.readAsDataURL(slicedBlob);
 });
 // [CODE ENDS]

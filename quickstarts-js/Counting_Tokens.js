@@ -180,7 +180,12 @@ imageBlob = await fetch(IMAGE_URL).then(res => res.blob());
 
 imageDataUrl = await new Promise((resolve) => {
   reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(',')[1]); 
+  // Use substring with indexOf for better performance than split
+  reader.onloadend = () => {
+    const result = reader.result;
+    const commaIndex = result.indexOf(',');
+    resolve(result.substring(commaIndex + 1));
+  };
   reader.readAsDataURL(imageBlob);
 });
 
@@ -268,10 +273,11 @@ audioUrl = URL.createObjectURL(audioBlob);
 audio = new Audio(audioUrl);
 
 await new Promise((resolve) => {
+  // Use once option to prevent memory leaks from unremoved event listeners
   audio.addEventListener("loadedmetadata", () => {
     console.log("Duration (in seconds):", audio.duration);
     resolve();
-  });
+  }, { once: true });
 });
 
 // [CODE ENDS]

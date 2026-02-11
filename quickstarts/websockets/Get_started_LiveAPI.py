@@ -90,6 +90,8 @@ class AudioLoop:
 
         self.ws = None
         self.audio_stream = None
+        # Create PyAudio instance once to avoid resource leaks
+        self.pya = pyaudio.PyAudio()
 
     async def startup(self):
         setup_msg = {"setup": {"model": f"models/{model}"}}
@@ -163,9 +165,9 @@ class AudioLoop:
         
         image_io = io.BytesIO()
         img.save(image_io, format="jpeg")
-        image_io.seek(0)
         
-        image_bytes = image_io.read()
+        # Use getvalue() instead of seek() + read() for better performance
+        image_bytes = image_io.getvalue()
         return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
 
     async def get_screen(self):
@@ -185,10 +187,9 @@ class AudioLoop:
             await self.ws.send(json.dumps(msg))
 
     async def listen_audio(self):
-        pya = pyaudio.PyAudio()
-
-        mic_info = pya.get_default_input_device_info()
-        self.audio_stream = pya.open(
+        # Use the PyAudio instance created in __init__ to avoid resource leaks
+        mic_info = self.pya.get_default_input_device_info()
+        self.audio_stream = self.pya.open(
             format=FORMAT,
             channels=CHANNELS,
             rate=SEND_SAMPLE_RATE,
