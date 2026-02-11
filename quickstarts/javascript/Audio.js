@@ -47,7 +47,7 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 /* Markdown (render)
 ### Choose a model
 
-Now select the model you want to use in this guide, either by selecting one in the list or writing it down. Keep in mind that some models, like the 2.5 ones are thinking models and thus take slightly more time to respond (cf. [thinking notebook](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Get_started_thinking.ipynb) for more details and in particular learn how to switch the thinking off).
+Now select the model you want to use in this guide, either by selecting one in the list or writing it down. Keep in mind that some models, like the 2.5 ones are thinking models and thus take slightly more time to respond (cf. [thinking notebook](https://github.com/google-gemini/cookbook/blob/main/quickstarts/Get_started_thinking.ipynb) for more details and in particular learn how to switch the thinking off).
 
 For more information about all Gemini models, check the [documentation](https://ai.google.dev/gemini-api/docs/models/gemini) for extended information on each of them.
 */
@@ -59,7 +59,7 @@ MODEL_ID = "gemini-2.5-flash" // "gemini-2.5-flash-lite", "gemini-2.5-flash""gem
 /* Markdown (render)
 ### Upload an audio file with the File API
 
-To use an audio file in your prompt, you must first upload it using the [File API](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/File_API.ipynb).
+To use an audio file in your prompt, you must first upload it using the [File API](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/File_API.js).
 
 */
 
@@ -258,7 +258,7 @@ The video presents a compelling review of Google&#x27;s new Gemini 2.5 Pro Exper
 
 You can count the number of tokens in your audio file using the [countTokens](https://googleapis.github.io/js-genai/release_docs/classes/models.Models.html#counttokens) method.
 
-Audio files have a fixed per second token rate (more details in the dedicated [count token quickstart](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Counting_Tokens.ipynb)).
+Audio files have a fixed per second token rate (more details in the dedicated [count token quickstart](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/Counting_Tokens.js)).
 */
 
 // [CODE STARTS]
@@ -285,7 +285,7 @@ Audio file tokens: 83528
 
 More details about Gemini API's [vision capabilities](https://ai.google.dev/gemini-api/docs/vision) in the documentation.
 
-If you want to know about the File API, check its [API reference](https://ai.google.dev/api/files) or the [File API](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/File_API.js) quickstart.
+If you want to know about the File API, check its [API reference](https://ai.google.dev/api/files) or the [File API](https://github.com/google-gemini/cookbook/blob/main/quickstarts/javascript/File_API.js) quickstart.
 
 ### Related examples
 
@@ -294,6 +294,6 @@ Check this example using the audio files to give you more ideas on what the gemi
 
 ### Continue your discovery of the Gemini API
 
-Have a look at the [Video_Understanding](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/Video_understanding.js) quickstart to learn about another type of media file, then learn more about [prompting with media files](https://ai.google.dev/gemini-api/docs/files#prompt-guide) in the docs, including the supported formats and maximum length for audio files.
+Have a look at the [Video_Understanding](https://github.com/google-gemini/cookbook/blob/main/quickstarts/Video_understanding.ipynb) quickstart to learn about another type of media file, then learn more about [prompting with media files](https://ai.google.dev/gemini-api/docs/files#prompt-guide) in the docs, including the supported formats and maximum length for audio files.
 
 */
