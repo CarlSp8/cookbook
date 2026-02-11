@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft - Empowering Everyone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #262626;
+            background-color: #ffffff;
+        }
+        
+        header {
+            background-color: #ffffff;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #262626;
+        }
+        
+        .logo-squares {
+            display: grid;
+            grid-template-columns: repeat(2, 10px);
+            grid-template-rows: repeat(2, 10px);
+            gap: 2px;
+        }
+        
+        .square {
+            width: 10px;
+            height: 10px;
+        }
+        
+        .square-red { background-color: #f25022; }
+        .square-green { background-color: #7fba00; }
+        .square-blue { background-color: #00a4ef; }
+        .square-yellow { background-color: #ffb900; }
+        
+        nav {
+            display: flex;
+            gap: 24px;
+        }
+        
+        nav a {
+            color: #262626;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+            color: #ffffff;
+            padding: 80px 32px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 32px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            background-color: #0067b8;
+            color: #ffffff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background-color: #005a9e;
+        }
+        
+        .products {
+            padding: 64px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .products h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 48px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        
+        .product-card {
+            padding: 32px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .product-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #0078d4;
+        }
+        
+        .product-card p {
+            color: #505050;
+            margin-bottom: 16px;
+        }
+        
+        .product-card a {
+            color: #0067b8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .product-card a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: #f2f2f2;
+            padding: 32px;
+            text-align: center;
+            color: #616161;
+            margin-top: 64px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-squares">
+                <div class="square square-red"></div>
+                <div class="square square-green"></div>
+                <div class="square square-blue"></div>
+                <div class="square square-yellow"></div>
+            </div>
+            <span>Microsoft</span>
+        </div>
+        <nav>
+            <a href="#products">Products</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#support">Support</a>
+            <a href="#company">Company</a>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Empowering every person and organization on the planet to achieve more</h1>
+        <p>From productivity tools to cloud services, we're committed to helping you work smarter, connect better, and innovate faster.</p>
+        <a href="#" class="cta-button">Explore Microsoft 365</a>
+    </section>
+    
+    <section class="products" id="products">
+        <h2>Our Products & Services</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <h3>Microsoft 365</h3>
+                <p>Get premium Office apps, extra cloud storage, advanced security, and more—all in one convenient subscription.</p>
+                <a href="#">Learn more →</a>
+            </div>
+            <div class="product-card">
+                <h3>Azure</h3>
+                <p>Build, run, and manage applications across multiple clouds with industry-leading AI and developer tools.</p>
+                <a href="#">Learn more →</a>
+            </div>
+            <div class="product-card">
+                <h3>Windows 11</h3>
+                <p>Experience the best Windows ever with new features designed to boost your productivity and creativity.</p>
+                <a href="#">Learn more →</a>
+            </div>
+            <div class="product-card">
+                <h3>Surface</h3>
+                <p>Explore our lineup of innovative devices designed to help you create, work, and play anywhere.</p>
+                <a href="#">Learn more →</a>
+            </div>
+            <div class="product-card">
+                <h3>Xbox</h3>
+                <p>Play together with friends and discover your next favorite game with Xbox Game Pass Ultimate.</p>
+                <a href="#">Learn more →</a>
+            </div>
+            <div class="product-card">
+                <h3>Dynamics 365</h3>
+                <p>Transform your business with intelligent business applications that work together seamlessly.</p>
+                <a href="#">Learn more →</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy; 2024 Microsoft Corporation. This is a sample website created for demonstration purposes.</p>
+    </footer>
+</body>
+</html>
