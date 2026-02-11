@@ -57,8 +57,6 @@ import pyaudio
 import argparse
 
 from websockets.asyncio.client import connect
-import sys
-import os
 
 # Add parent directory to path to import shared utilities
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -73,6 +71,7 @@ if sys.version_info < (3, 11, 0):
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
 
+# Note: websockets version uses a smaller chunk size for lower latency
 CHUNK_SIZE = 512
 
 host = "generativelanguage.googleapis.com"
