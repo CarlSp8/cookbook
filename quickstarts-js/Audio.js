@@ -125,6 +125,9 @@ slicedBase64 = await new Promise((resolve) => {
   reader.onloadend = () => {
     const result = reader.result;
     const commaIndex = result.indexOf(',');
+    if (commaIndex === -1) {
+      throw new Error('Invalid data URL format');
+    }
     resolve(result.substring(commaIndex + 1));
   };
   reader.readAsDataURL(slicedBlob);

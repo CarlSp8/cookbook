@@ -237,8 +237,12 @@ class AudioLoop:
                     # For interruptions to work, we need to empty out the audio queue
                     # Because it may have loaded much more audio than has played yet.
                     print("\nEnd of turn")
-                    while not self.audio_in_queue.empty():
-                        self.audio_in_queue.get_nowait()
+                    # Use exception handling to avoid race conditions
+                    while True:
+                        try:
+                            self.audio_in_queue.get_nowait()
+                        except asyncio.QueueEmpty:
+                            break
 
     async def play_audio(self):
         pya = pyaudio.PyAudio()
@@ -286,6 +290,10 @@ class AudioLoop:
         except ExceptionGroup as EG:
             self.audio_stream.close()
             traceback.print_exception(EG)
+        finally:
+            # Clean up PyAudio instance to properly release audio resources
+            if hasattr(self, 'pya'):
+                self.pya.terminate()
 
 
 if __name__ == "__main__":
