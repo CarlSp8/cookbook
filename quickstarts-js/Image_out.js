@@ -55,9 +55,8 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.30.0");
-GoogleGenAI = module.GoogleGenAI;
-ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const { initializeGeminiClient, blobToBase64 } = await import("./utils.js");
+ai = await initializeGeminiClient("1.30.0");
 
 MODEL_ID = "gemini-2.5-flash-image"
 PRO_MODEL_ID = "gemini-3-pro-image-preview"
@@ -671,11 +670,7 @@ You can now mix up to 6 images in high-fidelity and 14 with minor changes.
 async function fetchImage(url) {
     const response = await fetch(url);
     const blob = await response.blob();
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.readAsDataURL(blob);
-    });
+    return blobToBase64(blob);
 }
 
 // Fetch the images

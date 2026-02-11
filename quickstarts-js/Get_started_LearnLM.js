@@ -76,9 +76,8 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
-GoogleGenAI = module.GoogleGenAI;
-ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const { initializeGeminiClient } = await import("./utils.js");
+ai = await initializeGeminiClient();
 // [CODE ENDS]
 
 /* Markdown (render)
