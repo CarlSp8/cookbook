@@ -97,6 +97,8 @@ The Gemini API is a REST API. You can call it directly using tools like `curl` (
 * [Dart (Flutter)](https://github.com/google/generative-ai-dart)
 * [Android](https://github.com/google/generative-ai-android)
 * [Swift](https://github.com/google/generative-ai-swift)
+
+**OpenAI SDK Compatibility**: The Gemini API also supports the [OpenAI Python library](https://github.com/openai/openai-python), making it easy to migrate existing OpenAI applications. See the [OpenAI Compatibility guide](./quickstarts/Get_started_OpenAI_Compatibility.ipynb) [![Colab](https://storage.googleapis.com/generativeai-downloads/images/colab_icon16.png)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_started_OpenAI_Compatibility.ipynb) to learn more.
 <br><br>
 
 ## Get Help
@@ -106,6 +108,18 @@ Ask a question on the [Google AI Developer Forum](https://discuss.ai.google.dev/
 ## The Gemini API on Google Cloud Vertex AI
 
 For enterprise developers, the Gemini API is also available on Google Cloud Vertex AI. See [this repo](https://github.com/GoogleCloudPlatform/generative-ai) for examples.
+
+## Monitoring and Auditing LLM Usage
+
+When building applications with the Gemini API, it's important to implement proper monitoring and auditing practices:
+
+* **Usage Tracking**: Monitor your API usage, rate limits, and quotas through the [Google AI Studio](https://aistudio.google.com/) dashboard.
+* **Cost Management**: Track token usage and costs to ensure efficient resource utilization.
+* **Content Safety**: Implement content filtering and safety checks appropriate for your use case.
+* **Compliance**: Ensure your application complies with relevant regulations and organizational policies.
+* **Logging**: Maintain appropriate logs of LLM interactions for debugging and audit purposes.
+
+For enterprise applications requiring advanced monitoring, auditing, and compliance features, consider using the Gemini API on [Google Cloud Vertex AI](https://github.com/GoogleCloudPlatform/generative-ai), which provides comprehensive logging, monitoring, and governance capabilities through Google Cloud's infrastructure.
 
 ## Contributing
 
