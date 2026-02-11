@@ -26,13 +26,14 @@ client=genai.Client(api_key=api_key)
 # Upload a sample file to the client.files API
 file_path = "/content/image.png"
 display_name = "Gemini Logo"
-file_response = client.files.upload(
-    file=open(file_path, "rb"),
-    config={
-        "mime_type":"image/png",
-        "display_name":display_name
-    }
-)
+with open(file_path, "rb") as f:
+    file_response = client.files.upload(
+        file=f,
+        config={
+            "mime_type":"image/png",
+            "display_name":display_name
+        }
+    )
 print(f"Uploaded file {file_response.display_name} as: {file_response.uri}")
 
 # Retrieve the uploaded file from the client.files.get

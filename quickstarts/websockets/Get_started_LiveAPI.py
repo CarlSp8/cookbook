@@ -158,15 +158,14 @@ class AudioLoop:
         
         i = sct.grab(monitor)
         mime_type = "image/jpeg"
-        image_bytes = mss.tools.to_png(i.rgb, i.size)
-        img = PIL.Image.open(io.BytesIO(image_bytes))
+        # Convert directly from RGB to JPEG without intermediate PNG conversion
+        img = PIL.Image.frombytes("RGB", i.size, i.rgb)
         
         image_io = io.BytesIO()
         img.save(image_io, format="jpeg")
-        image_io.seek(0)
         
-        image_bytes = image_io.read()
-        return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
+        image_bytes = base64.b64encode(image_io.getvalue()).decode()
+        return {"mime_type": mime_type, "data": image_bytes}
 
     async def get_screen(self):
         while True:
