@@ -245,8 +245,8 @@ class AudioLoop:
                             break
 
     async def play_audio(self):
-        pya = pyaudio.PyAudio()
-        stream = pya.open(
+        # Use the PyAudio instance created in __init__ to avoid resource leaks
+        stream = self.pya.open(
             format=FORMAT, channels=CHANNELS, rate=RECEIVE_SAMPLE_RATE, output=True
         )
         while True:
