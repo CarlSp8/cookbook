@@ -60,18 +60,19 @@ import mss
 import argparse
 
 from google import genai
+from liveapi_utils import (
+    FORMAT,
+    CHANNELS,
+    SEND_SAMPLE_RATE,
+    RECEIVE_SAMPLE_RATE,
+    CHUNK_SIZE,
+)
 
 if sys.version_info < (3, 11, 0):
     import taskgroup, exceptiongroup
 
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
-
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SEND_SAMPLE_RATE = 16000
-RECEIVE_SAMPLE_RATE = 24000
-CHUNK_SIZE = 1024
 
 MODEL = "gemini-2.5-flash-native-audio-preview-12-2025"
 

@@ -56,9 +56,8 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
-GoogleGenAI = module.GoogleGenAI;
-ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const { initializeGeminiClient, blobToBase64 } = await import("./utils.js");
+ai = await initializeGeminiClient();
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -87,11 +86,7 @@ First, you will prepare a sample image to upload to the API.
 imageFile = await fetch("https://storage.googleapis.com/generativeai-downloads/images/jetpack.jpg")
     .then(res => res.blob());
 
-imageDataUrl = await new Promise((resolve) => {
-    reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result.split(',')[1]); // Get only base64 string
-    reader.readAsDataURL(imageFile);
-});
+imageDataUrl = await blobToBase64(imageFile);
 console.image(imageDataUrl)
 // [CODE ENDS]
 

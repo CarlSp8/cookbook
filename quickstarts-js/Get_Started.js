@@ -53,9 +53,8 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
-GoogleGenAI = module.GoogleGenAI;
-ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const { initializeGeminiClient, blobToBase64 } = await import("./utils.js");
+ai = await initializeGeminiClient();
 
 MODEL_ID = "gemini-2.5-flash" // "gemini-2.5-flash-lite", "gemini-2.5-flash""gemini-2.5-pro", "gemini-3-flash-preview", "gemini-3-pro-preview"
 // [CODE ENDS]
@@ -114,11 +113,7 @@ const IMAGE_URL = "https://storage.googleapis.com/generativeai-downloads/data/je
 // Fetch the image as a Blob
 imageBlob = await fetch(IMAGE_URL).then(res => res.blob());
 
-imageDataUrl = await new Promise((resolve) => {
-  reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(',')[1]); // Get only base64 string
-  reader.readAsDataURL(imageBlob);
-});
+imageDataUrl = await blobToBase64(imageBlob);
 // [CODE ENDS]
 
 

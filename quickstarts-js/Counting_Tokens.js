@@ -51,9 +51,8 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
-GoogleGenAI = module.GoogleGenAI;
-ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const { initializeGeminiClient, blobToBase64 } = await import("./utils.js");
+ai = await initializeGeminiClient();
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -178,11 +177,7 @@ The current rates and token sizes can be found on the [documentation](https://ai
 const IMAGE_URL = "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQVVI2MWny3lHHTBYrzBOkRDMrJ3Bq2SbJrY0utnaCL8r0prFCjGFyujAFblaPu_eqAMXSPkrTqYGJ3rqdIQQ";
 imageBlob = await fetch(IMAGE_URL).then(res => res.blob());
 
-imageDataUrl = await new Promise((resolve) => {
-  reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(',')[1]); 
-  reader.readAsDataURL(imageBlob);
-});
+imageDataUrl = await blobToBase64(imageBlob);
 
 console.image(imageDataUrl)
 // [CODE ENDS]
