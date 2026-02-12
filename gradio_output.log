@@ -1,0 +1,2 @@
+/app/examples/gradio_audio.py:259: DeprecationWarning: The 'theme' parameter in the Blocks constructor will be removed in Gradio 6.0. You will need to pass 'theme' to Blocks.launch() instead.
+  interface = gr.Blocks(title="Gemini Voice Chat", theme=gr.themes.Soft())
