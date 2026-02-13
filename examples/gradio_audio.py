@@ -15,7 +15,7 @@
 """
 ## Setup
 
-The gradio-webrtc install fails unless you have ffmpeg@6, on mac:
+The fastrtc install fails unless you have ffmpeg@6, on mac:
 
 ```
 brew uninstall ffmpeg
@@ -26,12 +26,12 @@ brew link ffmpeg@6
 Create a virtual python environment, then install the dependencies for this script:
 
 ```
-pip install websockets numpy gradio-webrtc "gradio>=5.9.1"
+pip install websockets numpy fastrtc "gradio>=5.9.1"
 ```
 
 If installation fails it may be
 
-Before running this script, ensure the `GOOGLE_API_KEY` environment
+Before running this script, ensure the `GOOGLE_API_KEY` environment variable is set, or enter it in the UI.
 
 ```
 $ export GOOGLE_API_KEY ='add your key here'
@@ -44,7 +44,7 @@ You can get an api-key from Google AI Studio (https://aistudio.google.com/apikey
 To run the script:
 
 ```
-python gemini_gradio_audio.py
+python examples/gradio_audio.py
 ```
 
 On the gradio page (http://127.0.0.1:7860/) click record, and talk, gemini will reply. But note that interruptions
@@ -58,17 +58,17 @@ import json
 import numpy as np
 import gradio as gr
 import websockets.sync.client
-from gradio_webrtc import StreamHandler, WebRTC
+from fastrtc import StreamHandler, WebRTC
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 KEY_NAME="GOOGLE_API_KEY"
 
 # Configuration and Utilities
 class GeminiConfig:
     """Configuration settings for Gemini API."""
-    def __init__(self):
-        self.api_key = os.getenv(KEY_NAME)
+    def __init__(self, api_key):
+        self.api_key = api_key
         self.host = "generativelanguage.googleapis.com"
         self.model = "models/gemini-2.5-flash-lite"
         self.ws_url = f"wss://{self.host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key={self.api_key}"
@@ -101,7 +101,7 @@ class GeminiHandler(StreamHandler):
     """Handles streaming interactions with the Gemini API."""
     def __init__(self, expected_layout="mono", output_sample_rate=24000, output_frame_size=480) -> None:
         super().__init__(expected_layout, output_sample_rate, output_frame_size, input_sample_rate=24000)
-        self.config = GeminiConfig()
+        self.config = None
         self.ws = None
         self.all_output_data = None
         self.audio_processor = AudioProcessor()
@@ -114,8 +114,23 @@ class GeminiHandler(StreamHandler):
             output_frame_size=self.output_frame_size,
         )
 
+    def start_up(self):
+        """Initializes the handler with the API key."""
+        self.wait_for_args_sync()
+        # args[0] is the component (audio), args[1] is api_key
+        api_key = self.latest_args[1]
+        if not api_key:
+             print("API Key not provided.")
+             api_key = os.getenv(KEY_NAME)
+
+        self.config = GeminiConfig(api_key)
+
     def _initialize_websocket(self):
         """Initializes the WebSocket connection to the Gemini API."""
+        if not self.config or not self.config.api_key:
+            print("API Key missing, cannot connect.")
+            return
+
         try:
             self.ws = websockets.sync.client.connect(self.config.ws_url, timeout=3000)
             initial_request = {"setup": {"model": self.config.model,"tools":[{"google_search": {}}]}}
@@ -229,36 +244,47 @@ def registry(
         **kwargs
 ):
     """Sets up and returns the Gradio interface."""
-    api_key = token or os.environ.get(KEY_NAME)
-    if not api_key:
-        raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
-    with interface:
+    with gr.Blocks(theme=gr.themes.Soft()) as interface:
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
-                gr.HTML(
+                gr.Markdown(
                     """
-                    <div style='text-align: left'>
-                        <h1>Gemini API Voice Chat</h1>
-                    </div>
+                    # Gemini API Voice Chat
+                    Speak with Gemini using real-time audio streaming.
                     """
                 )
+
+                with gr.Row():
+                    api_key_input = gr.Textbox(
+                        label="Google API Key",
+                        placeholder="Enter your GOOGLE_API_KEY",
+                        value=os.getenv(KEY_NAME),
+                        type="password"
+                    )
+
                 gemini_handler = GeminiHandler()
                 with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+                    audio = WebRTC(
+                        label="Voice Chat",
+                        modality="audio",
+                        mode="send-receive",
+                        icon="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
+                        pulse_color="rgb(59, 130, 246)",
+                        icon_button_color="rgb(255, 255, 255)",
+                    )
 
                 audio.stream(
                     gemini_handler,
-                    inputs=[audio],
+                    inputs=[audio, api_key_input],
                     outputs=[audio],
                     time_limit=600,
                     concurrency_limit=10
                 )
     return interface
 
-# Launch the Gradio interface
-gr.load(
-    name='gemini-2.5-flash-lite',
-    src=registry,
-).launch()
+if __name__ == "__main__":
+    gr.load(
+        name='gemini-2.5-flash-lite',
+        src=registry,
+    ).launch()
