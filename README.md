@@ -85,6 +85,8 @@ These fully functional, end-to-end applications showcase the power of Gemini in 
 *   [Multimodal Live API Web Console](https://github.com/google-gemini/multimodal-live-api-web-console): React-based starter app for using the Multimodal Live API over a websocket
 *   [Fullstack Langgraph Quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart): A fullstack application using a React frontend and a LangGraph-powered backend agent
 *   [Google AI Studio Starter Applets](https://github.com/google-gemini/starter-applets): A collection of small apps that demonstrate how Gemini can be used to create interactive experiences
+*   [Google AI Studio Drive](https://aistudio.google.com/apps/drive): Access and manage your Gemini projects and files in Google AI Studio
+*   [GitHub Copilot CLI](https://github.com/github/copilot-cli): Command-line interface for GitHub Copilot
 <br><br>
 
 
