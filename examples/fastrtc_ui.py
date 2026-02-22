@@ -139,7 +139,7 @@ class GeminiHandler(AsyncStreamHandler):
         self.quit.set()
 
 
-with gr.Blocks() as demo:
+with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.HTML(
         """
         <div style='text-align: center'>
@@ -162,12 +162,13 @@ with gr.Blocks() as demo:
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
                 icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
             )
             voice = gr.Dropdown(
                 label="Voice",
+                info="Select the voice tone for Gemini",
                 choices=[
                     "Puck",
                     "Charon",
