@@ -15,7 +15,7 @@
 """
 ## Setup
 
-The gradio-webrtc install fails unless you have ffmpeg@6, on mac:
+The fastrtc install fails unless you have ffmpeg@6, on mac:
 
 ```
 brew uninstall ffmpeg
@@ -26,7 +26,7 @@ brew link ffmpeg@6
 Create a virtual python environment, then install the dependencies for this script:
 
 ```
-pip install websockets numpy gradio-webrtc "gradio>=5.9.1"
+pip install websockets numpy fastrtc "gradio>=5.9.1"
 ```
 
 If installation fails it may be
@@ -58,7 +58,7 @@ import json
 import numpy as np
 import gradio as gr
 import websockets.sync.client
-from gradio_webrtc import StreamHandler, WebRTC
+from fastrtc import StreamHandler, WebRTC
 
 __version__ = "0.0.3"
 
@@ -233,20 +233,28 @@ def registry(
     if not api_key:
         raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
-    interface = gr.Blocks()
+    interface = gr.Blocks(theme=gr.themes.Soft())
     with interface:
         with gr.Tabs():
             with gr.TabItem("Voice Chat"):
                 gr.HTML(
                     """
-                    <div style='text-align: left'>
+                    <div style='text-align: center'>
                         <h1>Gemini API Voice Chat</h1>
+                        <h3>Talk to Gemini using real-time audio streaming</h3>
                     </div>
                     """
                 )
                 gemini_handler = GeminiHandler()
                 with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+                    audio = WebRTC(
+                        label="Voice Chat",
+                        modality="audio",
+                        mode="send-receive",
+                        icon="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
+                        pulse_color="rgb(59, 130, 246)",
+                        icon_button_color="rgb(255, 255, 255)",
+                    )
 
                 audio.stream(
                     gemini_handler,
