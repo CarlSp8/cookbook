@@ -139,13 +139,16 @@ class GeminiHandler(AsyncStreamHandler):
         self.quit.set()
 
 
-with gr.Blocks() as demo:
+# Initialize the Blocks instance
+demo = gr.Blocks(theme=gr.themes.Soft())
+
+with demo:
     gr.HTML(
         """
         <div style='text-align: center'>
             <h1>Gen AI SDK Voice Chat</h1>
             <p>Speak with Gemini using real-time audio streaming</p>
-            <p>Get an API Key <a href="https://support.google.com/googleapi/answer/6158862?hl=en">here</a></p>
+            <p>Get an API Key <a href="https://support.google.com/googleapi/answer/6158862?hl=en" target="_blank" rel="noopener noreferrer">here</a></p>
         </div>
     """
     )
@@ -176,6 +179,7 @@ with gr.Blocks() as demo:
                     "Aoede",
                 ],
                 value="Puck",
+                info="Select the voice tone for Gemini",
             )
     webrtc.stream(
         GeminiHandler(),
@@ -192,4 +196,4 @@ with gr.Blocks() as demo:
 
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(server_port=7865)
