@@ -1,0 +1,3 @@
+## 2025-02-24 - Gradio Implicit Submissions & Link Security
+**Learning:** In Gradio interfaces, components that rely on implicit submissions (like pressing 'Enter' in a `gr.Textbox` mapped to `.submit()`) lack visual cues for the user. Additionally, external links in `gr.HTML` without `target="_blank"` cause the application to navigate away, breaking the current state or connection (e.g., losing a WebRTC session or entered data).
+**Action:** Always use the `info` parameter in `gr.Textbox` or similar components to explicitly instruct the user (e.g., `info="Press Enter to connect"`). Ensure all external links within `gr.HTML` or `gr.Markdown` components use `target="_blank"` and `rel="noopener noreferrer"` for security and to preserve application state.
