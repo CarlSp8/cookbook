@@ -162,9 +162,9 @@ with gr.Blocks() as demo:
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
-                icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+                icon="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
             )
             voice = gr.Dropdown(
                 label="Voice",
@@ -192,4 +192,4 @@ with gr.Blocks() as demo:
 
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(theme=gr.themes.Soft())
