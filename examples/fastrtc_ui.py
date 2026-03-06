@@ -145,13 +145,14 @@ with gr.Blocks() as demo:
         <div style='text-align: center'>
             <h1>Gen AI SDK Voice Chat</h1>
             <p>Speak with Gemini using real-time audio streaming</p>
-            <p>Get an API Key <a href="https://support.google.com/googleapi/answer/6158862?hl=en">here</a></p>
+            <p>Get an API Key <a href="https://support.google.com/googleapi/answer/6158862?hl=en" target="_blank" rel="noopener noreferrer">here</a></p>
         </div>
     """
     )
     with gr.Row() as api_key_row:
         api_key = gr.Textbox(
             label="API Key",
+            info="Press Enter to submit",
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
@@ -162,12 +163,13 @@ with gr.Blocks() as demo:
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
                 icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
             )
             voice = gr.Dropdown(
                 label="Voice",
+                info="Select a voice for Gemini",
                 choices=[
                     "Puck",
                     "Charon",
