@@ -1,0 +1,3 @@
+## 2024-05-14 - Improve context and navigation in Gradio applications
+**Learning:** In Gradio applications that use implicit submission (like pressing Enter in a `.submit()` mapped `gr.Textbox`), it is critical to explicitly state this behavior using the `info` parameter. Otherwise, users may not know how to proceed. Also, external links in `gr.HTML` must use `target="_blank"` and `rel="noopener noreferrer"` to prevent the user from navigating away from the running application and losing their session state.
+**Action:** Always verify `gr.Textbox` inputs with `.submit()` events have an explicit call to action in their `info` field (e.g., 'Press Enter to submit'), and ensure all external links open in a new tab securely.
