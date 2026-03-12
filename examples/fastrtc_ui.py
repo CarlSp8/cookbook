@@ -153,6 +153,7 @@ with gr.Blocks() as demo:
         api_key = gr.Textbox(
             label="API Key",
             placeholder="Enter your API Key",
+            info="Press Enter to submit",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
         )
@@ -168,6 +169,7 @@ with gr.Blocks() as demo:
             )
             voice = gr.Dropdown(
                 label="Voice",
+                info="Select the AI's voice",
                 choices=[
                     "Puck",
                     "Charon",
