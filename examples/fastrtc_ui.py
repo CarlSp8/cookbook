@@ -155,6 +155,7 @@ with gr.Blocks() as demo:
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
+            info="Press Enter to submit",
         )
     with gr.Row(visible=False) as row:
         with gr.Column():
