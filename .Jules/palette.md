@@ -1,0 +1,3 @@
+## 2024-05-24 - Explicit Submission Context in Gradio Textboxes
+**Learning:** When using Gradio's implicit submission mechanisms (like pressing Enter in a `.submit()` mapped `gr.Textbox`), the default UI does not make this interaction obvious. This can lead to accessibility and usability issues where users might look for a missing "Submit" button.
+**Action:** Use the `info` parameter in `gr.Textbox` to explicitly instruct the user (e.g., `info="Press Enter to submit"`) when the submission is mapped to the enter key. Additionally, external links in `gr.HTML` components must include `target="_blank"` and `rel="noopener noreferrer"` to prevent the user from navigating away from the active application session.
