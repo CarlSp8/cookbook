@@ -152,6 +152,7 @@ with gr.Blocks() as demo:
     with gr.Row() as api_key_row:
         api_key = gr.Textbox(
             label="API Key",
+            info="Press Enter to apply",
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
