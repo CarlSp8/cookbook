@@ -1,0 +1,3 @@
+## 2024-05-24 - Implicit submission mechanisms in Gradio requiring explicit instructions
+**Learning:** When using Gradio's implicit submission mechanisms (like pressing Enter in a `.submit()` mapped `gr.Textbox`), the default UI behavior does not provide clear visual cues, making it confusing to use.
+**Action:** When adding or utilizing implicit submissions, ensure that the component explicitly uses the `info` parameter to clearly communicate the necessary action to the user (e.g., `info="Press Enter to submit"`).
