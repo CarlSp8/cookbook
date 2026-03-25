@@ -152,6 +152,7 @@ with gr.Blocks() as demo:
     with gr.Row() as api_key_row:
         api_key = gr.Textbox(
             label="API Key",
+            info="Press Enter to submit and connect.",
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
@@ -162,12 +163,13 @@ with gr.Blocks() as demo:
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
-                icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+                icon="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
             )
             voice = gr.Dropdown(
                 label="Voice",
+                info="Select the AI's voice persona.",
                 choices=[
                     "Puck",
                     "Charon",
