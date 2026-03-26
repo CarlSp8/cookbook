@@ -155,6 +155,7 @@ with gr.Blocks() as demo:
             placeholder="Enter your API Key",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
+            info="Press Enter to submit and continue",
         )
     with gr.Row(visible=False) as row:
         with gr.Column():
@@ -162,7 +163,7 @@ with gr.Blocks() as demo:
                 label="Audio",
                 modality="audio",
                 mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
+                pulse_color="rgb(59, 130, 246)",
                 icon_button_color="rgb(255, 255, 255)",
                 icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
             )
