@@ -1,0 +1,3 @@
+## 2024-05-24 - Explicit Instructional Labels and Safe External Linking
+**Learning:** In Gradio components like Textbox that map implicit actions (e.g., pressing Enter) to backend functions (like `.submit()`), users may not intuitively know the interaction model. Furthermore, when linking out from HTML blocks, neglecting to open in a new tab (`target="_blank"`) risks losing the active web app state, and omitting `rel="noopener noreferrer"` presents a security vulnerability.
+**Action:** Always provide an explicit `info` label (e.g., "Press Enter to submit") for implicit interaction triggers, and ensure all external `a href` links within `gr.HTML` use `target="_blank" rel="noopener noreferrer"` to prioritize safety and user state retention.
