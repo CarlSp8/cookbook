@@ -1,0 +1,3 @@
+## 2025-03-03 - Prevent Gradio State Loss via External Links
+**Learning:** External links embedded in Gradio `gr.HTML` components without `target="_blank"` cause the entire tab to navigate away, completely losing the active websocket connection and UI state (like input API keys or WebRTC stream context). Furthermore, interactive inputs that rely on implicit submission (like a `gr.Textbox` mapped to a `.submit()` event) lack visible affordances, causing user confusion.
+**Action:** Always append `target="_blank" rel="noopener noreferrer"` to external links in `gr.HTML` components to protect application state. Explicitly use the `info` parameter (e.g., `info="Press Enter to submit"`) on inputs with implicit submission bindings to improve usability.
