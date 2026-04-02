@@ -1,0 +1,3 @@
+## 2024-04-02 - Gradio UI and External Links
+**Learning:** Gradio components like `gr.Textbox` use an implicit submit mechanism (e.g., pressing "Enter") when mapped to a `.submit()` event. Without explicit visual cues, this behavior is hidden from users. Also, linking to external resources using `gr.HTML` without `target="_blank"` and `rel="noopener noreferrer"` can navigate the user away from the app state and introduces security vulnerabilities (noopener/noreferrer).
+**Action:** When a Gradio component requires pressing Enter to submit, add an `info="Press Enter..."` parameter to the component to make the interaction explicit. Always ensure external links in `gr.HTML` have `target="_blank"` and `rel="noopener noreferrer"`.
