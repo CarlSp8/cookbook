@@ -1,0 +1,3 @@
+## 2025-04-02 - Gradio UI Component Security & Feedback
+**Learning:** Gradio implicit submission patterns (like mapped `.submit()` events on Textboxes) can leave users confused without explicit UI hints. Furthermore, `gr.HTML` external links are rendered directly to the DOM and can navigate the user away from the app state if not explicitly sandboxed.
+**Action:** Always add explicit instructional text (`info="Press Enter to submit"`) when relying on implicit Gradio submission handlers, and enforce `target="_blank"` with `rel="noopener noreferrer"` on all external links in `gr.HTML` components to protect user session state.
