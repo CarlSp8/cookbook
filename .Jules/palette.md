@@ -1,0 +1,3 @@
+## 2025-02-18 - Gradio Implicit Form Submission & Session State Protection
+**Learning:** Gradio textboxes with mapped `.submit()` events lack native visual indicators, leaving users without instruction on how to submit. Furthermore, standard `<a href="...">` links within `gr.HTML` components cause destructive full-page navigations that wipe the user's active session state if clicked.
+**Action:** Always add `info="Press Enter to submit"` (or similar instructional text) to Gradio inputs that rely on implicit keyboard submission. Always enforce `target="_blank" rel="noopener noreferrer"` on external links rendered via `gr.HTML` to protect the application's session state.
