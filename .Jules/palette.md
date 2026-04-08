@@ -1,0 +1,3 @@
+## 2025-04-08 - External Links in Gradio
+**Learning:** Users lose context and app state if external links in Gradio `gr.HTML` navigate them away from the current page. Implicit form submissions in Gradio components (like Textbox) can be unclear without explicit instructions.
+**Action:** Add `target="_blank"` and `rel="noopener noreferrer"` to `<a>` tags in `gr.HTML` components, and use the `info` parameter to clarify implicit submission actions (e.g., `info="Press Enter to submit"`).
