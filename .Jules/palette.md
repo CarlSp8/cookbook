@@ -1,0 +1,3 @@
+## 2025-02-13 - Explicit Instructions for Implicit Submissions
+**Learning:** Gradio Textboxes that rely on the `.submit()` event (pressing Enter) lack visual affordances indicating how to proceed, which can confuse users when no "Submit" button is present.
+**Action:** Always provide explicit guidance using the `info` parameter (e.g., `info="Press Enter to submit"`) for Textboxes that act as sole form submission triggers.
