@@ -1,0 +1,3 @@
+## 2024-05-24 - External Links in Gradio Apps
+**Learning:** Gradio web apps (especially those with heavy WebRTC state) can easily lose user state if external links in `gr.HTML` are opened in the same tab. Additionally, implicit form submissions (like pressing Enter) without visible buttons are often missed by users.
+**Action:** Always enforce `target="_blank"`, `rel="noopener noreferrer"`, and explicit `aria-label` for external links in Gradio to maintain app state and accessibility. Always add explicit helper text (e.g., `info="Press Enter..."`) for implicit form actions.
