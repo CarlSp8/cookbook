@@ -1,0 +1,3 @@
+## 2024-05-18 - Gradio Implicit Submission and External Links
+**Learning:** Gradio Textboxes with `.submit()` handlers do not inherently tell the user that "Enter" is the trigger mechanism, which is confusing when it controls the visibility of primary components like WebRTC. Additionally, external links in `gr.HTML` navigate users away from the Gradio state if not opened in a new tab, and lack screen-reader context.
+**Action:** Always use the `info` parameter on Textboxes with implicit `.submit()` bounds to provide clear instruction (e.g., "Press Enter..."). Furthermore, ensure `gr.HTML` external links use `target="_blank"`, `rel="noopener noreferrer"`, and descriptive `aria-label`s.
