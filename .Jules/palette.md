@@ -1,0 +1,3 @@
+## 2025-04-20 - Gradio Implicit Submission and Link Accessibility
+**Learning:** Gradio Textboxes using `.submit()` for implicit submission (pressing Enter) lack visual affordance. Also, external links in Gradio `gr.HTML` without `target="_blank"` cause users to navigate away and lose state.
+**Action:** Always add `info="Press Enter to submit"` to Gradio inputs relying on `.submit()`. Use `target="_blank"`, `rel="noopener noreferrer"`, and an `aria-label` for external links to preserve state and improve accessibility.
