@@ -1,0 +1,3 @@
+## 2024-04-24 - Gradio HTML External Links Navigation
+**Learning:** External links embedded in Gradio `gr.HTML` components navigate the user away from the web app state, resulting in a lost session. Because of how Gradio handles state, external links must open in a new tab. Additionally, adding an explicit `aria-label` is required for screen reader accessibility when opening new tabs.
+**Action:** Always add `target="_blank"`, `rel="noopener noreferrer"`, and an explicit `aria-label` (e.g., `aria-label="... (opens in a new tab)"`) to external links in `gr.HTML`.
