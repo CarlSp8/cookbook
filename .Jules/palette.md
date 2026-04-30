@@ -1,0 +1,3 @@
+## 2025-04-30 - Gradio Implicit Submission & State Loss
+**Learning:** Gradio textboxes with `.submit()` handlers hide their interaction model. While adding an `info` instruction (e.g., "Press Enter") clarifies this, external links in adjacent `gr.HTML` components without `target="_blank"` can cause users to navigate away, completely losing their application state (like entered API keys) before they even discover the hidden submit mechanism.
+**Action:** Always pair implicit submit instructions with state-preserving link targets (`_blank` + `noopener noreferrer`) in adjacent onboarding components.
