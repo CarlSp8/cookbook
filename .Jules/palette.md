@@ -1,0 +1,3 @@
+## 2024-05-05 - Gradio App State Security and Implicit Submission Guidance
+**Learning:** External links embedded within Gradio `gr.HTML` elements risk navigating users away from the active UI state (like WebRTC connections). Furthermore, Gradio's implicit `.submit()` bindings on Textbox components are not visually apparent.
+**Action:** Always append `target="_blank" rel="noopener noreferrer"` and descriptive `aria-label` attributes to external links in `gr.HTML` to protect session state and improve screen reader accessibility. Additionally, utilize the `info` parameter to explicitly instruct users when components rely on implicit keyboard submissions (e.g., Enter key).
