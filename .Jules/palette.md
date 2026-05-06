@@ -1,0 +1,3 @@
+## 2025-03-09 - Accessible External Links and Implicit Submissions in Gradio
+**Learning:** External links embedded in Gradio `gr.HTML` components can cause users to accidentally navigate away from the web app state, and screen readers may not indicate the behavior. Additionally, users often don't realize they need to press Enter to submit a `gr.Textbox` when there is no explicit submit button.
+**Action:** Always add `target="_blank"`, `rel="noopener noreferrer"`, and a descriptive `aria-label` (e.g., `aria-label="... (opens in a new tab)"`) to external links in `gr.HTML`. Always use the `info` parameter to explicitly instruct the user (e.g., `info="Press Enter to submit"`) for `.submit()` mapped `gr.Textbox` components.
