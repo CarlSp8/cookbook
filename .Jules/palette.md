@@ -1,0 +1,3 @@
+## 2024-05-24 - Gradio SPA Navigation & Implicit Submission Constraints
+**Learning:** Gradio applications function as Single Page Applications (SPAs) where external links will destroy active UI state (like WebRTC connections or ephemeral keys) if not forced into a new tab. Furthermore, `.submit()` bindings on `gr.Textbox` lack native visual affordance, relying entirely on invisible "Enter" key interactions.
+**Action:** Always append `target="_blank" rel="noopener noreferrer"` and descriptive `aria-label`s to `gr.HTML` links. Always pair `.submit()` event listeners on inputs with explicit `info` parameter guidance (e.g., "Press Enter to submit") so users know how to trigger the action.
