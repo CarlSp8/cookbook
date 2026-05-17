@@ -1,0 +1,3 @@
+## 2025-05-17 - Gradio External Links & Implicit Submissions State Loss
+**Learning:** External links inside Gradio `gr.HTML` components will navigate away from the SPA by default, causing users to completely lose their current interaction state (especially painful when configuring API keys). Furthermore, implicit form submissions (like Enter in a `.submit()` mapped `gr.Textbox`) lack visual affordance in Gradio without explicit `info` text.
+**Action:** Always add `target="_blank"` and `rel="noopener noreferrer"` with a descriptive `aria-label` to external links in `gr.HTML` blocks. Always use the `info` argument on inputs to document implicit `.submit()` bindings.
