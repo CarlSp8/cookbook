@@ -1,0 +1,3 @@
+## 2025-05-21 - Gradio External Link Security & Implicit Submission Guidance
+**Learning:** External links embedded in Gradio `gr.HTML` components must use `target="_blank"` and `rel="noopener noreferrer"` to prevent users from accidentally navigating away from the web app state. Additionally, Gradio's implicit submission mechanisms (like pressing Enter in a `.submit()` mapped `gr.Textbox`) lack visual cues by default, requiring explicit `info` text.
+**Action:** Always include `target="_blank"`, `rel="noopener noreferrer"`, and a descriptive `aria-label` for external links in `gr.HTML`. Always use the `info` parameter to explicitly instruct the user when binding an action to a `.submit()` event.
