@@ -1,0 +1,3 @@
+## 2025-05-24 - Improve Gradio HTML Links and Textbox Instructions
+**Learning:** External links embedded in Gradio `gr.HTML` components must use `target="_blank"` and `rel="noopener noreferrer"` to prevent users from accidentally navigating away from the web app state. Additionally, `aria-label` should be included for screen reader accessibility. Also, Gradio's implicit submission mechanisms (like pressing Enter in a `.submit()` mapped `gr.Textbox`) require the `info` parameter to explicitly instruct the user.
+**Action:** Always add `target="_blank"`, `rel="noopener noreferrer"`, and an `aria-label` to external links in `gr.HTML`. Always add `info="Press Enter..."` to `gr.Textbox` components that rely on implicit `.submit()` actions.
