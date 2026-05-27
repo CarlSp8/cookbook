@@ -1,0 +1,3 @@
+## 2025-05-27 - External Links in Gradio HTML Components
+**Learning:** External links embedded in Gradio `gr.HTML` components lack security attributes (`target="_blank"` and `rel="noopener noreferrer"`) by default, potentially exposing users to security risks and navigating them away from the app state. They also require explicit `aria-label`s for screen reader accessibility to announce that the link opens in a new tab.
+**Action:** Always add `target="_blank"`, `rel="noopener noreferrer"`, and a descriptive `aria-label` (e.g., `aria-label="... (opens in a new tab)"`) to external links in `gr.HTML` components.
