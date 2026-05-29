@@ -1,0 +1,3 @@
+## 2025-05-29 - Secure and Accessible External Links in Gradio
+**Learning:** Using "here" as link text (even with an `aria-label`) is an accessibility anti-pattern. Screen reader users often scan lists of links, so the link text itself must be descriptive. Furthermore, external links in Gradio without `target="_blank"` and `rel="noopener noreferrer"` can disrupt the app state and pose security risks.
+**Action:** Wrap descriptive text (e.g., "Get an API Key") in the anchor tag rather than using "here", and always include `target="_blank"` and `rel="noopener noreferrer"` to protect state and improve accessibility.
