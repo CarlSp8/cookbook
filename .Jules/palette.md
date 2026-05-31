@@ -1,0 +1,3 @@
+## 2024-05-31 - Gradio implicit submit UI feedback
+**Learning:** Gradio implicit submission (like pressing Enter in a Textbox with an associated `.submit()` handler) isn't obvious to users, and without a visible button, the user might not realize the form is submittable or how to trigger it. Additionally, external links in Gradio HTML block should open in new tabs to prevent app state loss and require aria-labels.
+**Action:** Explicitly use the `info` parameter in `gr.Textbox` to provide instructional text (e.g., `info="Press Enter to submit"`) when relying on implicit submission event listeners like `.submit()`.
