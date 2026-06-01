@@ -1,0 +1,3 @@
+## 2025-02-25 - Gradio HTML Links & Form Submissions
+**Learning:** External links in Gradio `gr.HTML` components can cause users to lose their app state if they don't open in a new tab. Additionally, using "here" as link text is an accessibility anti-pattern. Gradio textboxes with `.submit()` listeners don't visually indicate they can be submitted by pressing Enter.
+**Action:** Always use `target="_blank"` and `rel="noopener noreferrer"` for external links, wrap descriptive text inside the anchor tag, and use an `aria-label`. Use the `info` parameter on Textboxes with `.submit()` handlers to explicitly state "Press Enter to submit".
