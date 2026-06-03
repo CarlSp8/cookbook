@@ -1,0 +1,3 @@
+## 2025-02-18 - Avoid app state loss and improve link accessibility in Gradio
+**Learning:** Gradio `gr.HTML` links without `target="_blank"` and `rel="noopener noreferrer"` can cause the user to navigate away, losing their app state (like audio connections). Additionally, using "here" as link text is an accessibility anti-pattern for screen readers. Gradio implicit submissions in `gr.Textbox` (mapped to `.submit()`) lack visual affordance.
+**Action:** Always wrap descriptive text in the anchor tag (e.g., "Get an API Key"), add an `aria-label` for screen readers, and include `target="_blank" rel="noopener noreferrer"`. For textboxes with implicit submit actions, use the `info` parameter to instruct users (e.g., `info="Press Enter to submit"`).
