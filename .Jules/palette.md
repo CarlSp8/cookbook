@@ -1,0 +1,3 @@
+## 2025-02-24 - Accessible Links and Form Submissions in Gradio
+**Learning:** Gradio HTML components do not enforce secure or accessible link patterns by default. Using vague link text like "here" without target blank or aria-labels creates an accessibility anti-pattern. Additionally, form elements like Textbox mapping to `.submit()` don't inherently instruct the user to press Enter.
+**Action:** Always wrap descriptive link text in anchor tags, add `target="_blank" rel="noopener noreferrer"`, and include `aria-label`s for external links. Always add an `info` instruction to Textbox components that rely on Enter-key submissions.
