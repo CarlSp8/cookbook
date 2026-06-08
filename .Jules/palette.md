@@ -1,0 +1,3 @@
+## 2024-05-18 - Avoid Anti-Pattern Links in Gradio
+**Learning:** Found an accessibility anti-pattern in `examples/fastrtc_ui.py`: `<a href="...">here</a>`. The link lacks `target="_blank"` and `rel="noopener noreferrer"`. Clicking "here" opens the link in the same window, losing the web app state, and is bad for screen readers.
+**Action:** Replace `<a href="...">here</a>` with `<a href="..." target="_blank" rel="noopener noreferrer" aria-label="Get an API Key (opens in a new tab)">Get an API Key</a>` (or similar clear text) in `gr.HTML` strings to improve security, usability, and accessibility.
