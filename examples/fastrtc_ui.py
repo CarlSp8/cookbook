@@ -145,14 +145,16 @@ with gr.Blocks() as demo:
         <div style='text-align: center'>
             <h1>Gen AI SDK Voice Chat</h1>
             <p>Speak with Gemini using real-time audio streaming</p>
-            <p>Get an API Key <a href="https://support.google.com/googleapi/answer/6158862?hl=en">here</a></p>
+            <p><a href="https://support.google.com/googleapi/answer/6158862?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Get an API Key (opens in a new tab)">Get an API Key</a></p>
         </div>
-    """
+        """,
+        padding=True,
     )
     with gr.Row() as api_key_row:
         api_key = gr.Textbox(
             label="API Key",
             placeholder="Enter your API Key",
+            info="Press Enter to submit",
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
         )
