@@ -1,0 +1,3 @@
+## 2025-05-23 - Gradio External Links & Implicit Submissions
+**Learning:** External links in Gradio HTML components open in the same frame by default, breaking the app state, and using "here" as link text violates WCAG guidelines. Furthermore, Gradio Textboxes with bound `.submit()` handlers do not visually indicate this implicit behavior to screen readers or users.
+**Action:** Always use `target="_blank"` and `rel="noopener noreferrer"` with descriptive text (avoiding "here") for external links. For Textboxes bound to `.submit()`, explicitly add `info="Press Enter to submit"` to expose the interaction.
