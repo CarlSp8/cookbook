@@ -1,0 +1,3 @@
+## 2025-06-14 - Gradio HTML Link Accessibility
+**Learning:** External links inside Gradio `gr.HTML` components can cause the user to navigate away and lose app state if not configured properly. Additionally, using "here" as link text is an accessibility anti-pattern that provides poor context for screen readers.
+**Action:** Always use `target="_blank"` and `rel="noopener noreferrer"` for external links in `gr.HTML` to prevent state loss. Wrap descriptive text (like "Get an API Key") inside the anchor tag instead of using "here", and provide an `aria-label` explicitly stating it opens in a new tab.
