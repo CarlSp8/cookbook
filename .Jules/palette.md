@@ -1,0 +1,3 @@
+## 2025-02-26 - Accessible External Links and Form Affordance in Gradio
+**Learning:** Gradio `gr.HTML` components don't automatically make external links secure or accessible. Using "here" as link text is an accessibility anti-pattern. Also, Gradio `gr.Textbox` components mapped to `.submit()` events lack visual affordance that pressing Enter will submit them.
+**Action:** Always wrap the descriptive text in the `<a>` tag, use `target="_blank"` and `rel="noopener noreferrer"` for external links, and add an `aria-label` to warn screen readers about the new tab. For implicit form submissions (like pressing Enter), explicitly use the `info` parameter to instruct users.
