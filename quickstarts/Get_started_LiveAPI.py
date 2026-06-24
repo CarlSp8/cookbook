@@ -18,7 +18,7 @@
 
 To install the dependencies for this script, run:
 
-``` 
+```
 pip install google-genai opencv-python pyaudio pillow mss
 ```
 
@@ -27,7 +27,7 @@ variable is set to the api-key you obtained from Google AI Studio.
 
 Important: **Use headphones**. This script uses the system default audio
 input and output, which often won't include echo cancellation. So to prevent
-the model from interrupting itself it is important that you use headphones. 
+the model from interrupting itself it is important that you use headphones.
 
 ## Run
 
@@ -48,7 +48,6 @@ python Get_started_LiveAPI.py --mode screen
 import asyncio
 import base64
 import io
-import os
 import sys
 import traceback
 
@@ -62,7 +61,8 @@ import argparse
 from google import genai
 
 if sys.version_info < (3, 11, 0):
-    import taskgroup, exceptiongroup
+    import taskgroup
+    import exceptiongroup
 
     asyncio.TaskGroup = taskgroup.TaskGroup
     asyncio.ExceptionGroup = exceptiongroup.ExceptionGroup
