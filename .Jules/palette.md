@@ -1,0 +1,3 @@
+## 2024-06-28 - Descriptive links and implicit submission guidance
+**Learning:** Using "here" as link text is an accessibility anti-pattern. External links in Gradio `gr.HTML` components must use `target="_blank"` and `rel="noopener noreferrer"` to prevent app state loss. When a Gradio `gr.Textbox` has an implicit submission action bound to `.submit()`, it's functionally misleading to not instruct the user to "Press Enter", especially for subsequent components like WebRTC.
+**Action:** Always wrap descriptive text inside anchor tags, provide `aria-label` for new tabs, and ensure `target="_blank"` with `rel="noopener noreferrer"`. Use `info` attribute to explicitly instruct users about implicit enter-key submissions when a `.submit()` event is bound.
