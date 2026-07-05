@@ -1,0 +1,3 @@
+## 2025-02-18 - Descriptive Link Text & Implicit Submission Cues
+**Learning:** In Gradio applications, using "here" for link text is an accessibility anti-pattern. External links in `gr.HTML` can cause state loss if they don't open in a new tab. Additionally, textboxes mapped with `.submit()` listeners lack visual affordance that pressing "Enter" triggers an action.
+**Action:** Always wrap descriptive text for links (avoid "here"), use `target="_blank"` and `rel="noopener noreferrer"` with an `aria-label` for external links, and use the `info` parameter on `gr.Textbox` to explicitly state "Press Enter..." when a `.submit()` event is bound.
