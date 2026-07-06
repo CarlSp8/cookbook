@@ -1,0 +1,3 @@
+## 2025-02-14 - Improve accessibility of links and add explicit instructions for implicit form submissions
+**Learning:** Gradio HTML components with external links need `target="_blank"` and `rel="noopener noreferrer"` to prevent app state loss, and "here" is an accessibility anti-pattern. Additionally, implicit submission mechanisms (like pressing Enter on a `gr.Textbox`) lack visual cues.
+**Action:** Always use descriptive link text with `target="_blank"` and `rel="noopener noreferrer"`. Add an `info` parameter to `gr.Textbox` to instruct users to "Press Enter" when `.submit()` is bound to it.
