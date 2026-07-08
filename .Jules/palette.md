@@ -1,0 +1,3 @@
+## 2025-05-24 - Gradio Link Accessibility and State Retention
+**Learning:** Using non-descriptive link text like "here" is an accessibility anti-pattern, but more critically for Gradio apps, omitting `target="_blank"` on external links causes users to navigate away, instantly losing their entire session state when they click a help link (like getting an API key). Additionally, Gradio Textboxes mapped to `.submit()` lack visual affordance for submission.
+**Action:** Always use descriptive anchor text, enforce `target="_blank"` with `rel="noopener noreferrer"` for external links in `gr.HTML` to protect app state, and use the `info` parameter on Textboxes to explicitly instruct users (e.g., "Press Enter to submit") when relying on implicit submission.
